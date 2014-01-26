@@ -22,7 +22,7 @@ exports = module.exports =
     var deferred = Q.defer();
     var path = '/code/' + projectId;
     if (sourceId) {
-      if (/^.*\..*$/.test(sourceId))
+      if (!/^.*\..*$/.test(sourceId))
         throw new Error('Source extension missing');
       else path += '/' + sourceId;
     } else if (!/^.*\.zip$/.test(projectId))
