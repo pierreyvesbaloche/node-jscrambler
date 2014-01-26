@@ -39,7 +39,6 @@ function JScramblerClient (options) {
  * @param {String} path
  * @param {Object} params
  * @returns {String} The request path.
- * @this JSCramblerClient
  */
 function buildPath (method, path, params) {
   var query = '';
@@ -72,7 +71,6 @@ function buildSortedQuery (params) {
  * @param {String} path
  * @param {Object} params
  * @returns {String} The digested signature.
- * @this JScramblerClient
  */
 function generateHmacSignature (method, path, params) {
   var paramsCopy = _.clone(params);
@@ -118,7 +116,6 @@ function handleFileParams (params) {
  * @param {Object} params
  * @returns {Object} Params containing the access_key, timestamp and signature
  properties.
- * @this JScramblerClient
  */
 function signedParams (method, path, params) {
   _.defaults(params, {
