@@ -84,7 +84,7 @@ function generateHmacSignature (method, path, params) {
   }
   var signatureData = method.toUpperCase() + ';' + this.options.host.toLowerCase() +
     ';' + path + ';' + buildSortedQuery(paramsCopy);
-  var hmac = crypto.createHmac('sha256', this.options.secretKey);
+  var hmac = crypto.createHmac('sha256', this.options.secretKey.toUpperCase());
   hmac.update(signatureData);
   return hmac.digest('base64');
 }
