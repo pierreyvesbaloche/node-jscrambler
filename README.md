@@ -1,5 +1,8 @@
 # JSCrambler Client for Node.js
 
+## How To
+    npm install jscrambler
+
 ## Upload/download example
 ```js
 var fs = require('fs-extra');
