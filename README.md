@@ -1,9 +1,25 @@
 # JSCrambler Client for Node.js
 
-## How To
-    npm install jscrambler
+## CLI
+```
+npm install -g jscrambler
+```
+    Usage: jscrambler [source files] [options]
 
-## Upload/download example
+    Options:
+
+      -h, --help                    output usage information
+      -V, --version                 output the version number
+      -c, --config [config]         JScrambler configuration options
+      -o, --output <output>         Output directory
+      -a, --access-key <accessKey>  Access key
+      -s, --secret-key <secretKey>  Secret key
+
+## API
+```
+npm install jscrambler
+```
+### Upload/download example
 ```js
 var fs = require('fs-extra');
 var jScrambler = require('jscrambler');

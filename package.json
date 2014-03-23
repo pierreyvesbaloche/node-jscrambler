@@ -26,7 +26,10 @@
   "dependencies": {
     "q": "^1.0.1",
     "lodash": "^2.4.1",
-    "needle": "^0.6.6"
+    "needle": "^0.6.6",
+    "commander": "^2.1.0",
+    "fs-extra": "^0.8.1"
   },
-  "main": "jscrambler"
+  "main": "jscrambler",
+  "bin": "bin/jscrambler"
 }

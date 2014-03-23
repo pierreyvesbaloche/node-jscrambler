@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+'use strict';
+
+var commander = require('commander');
+var fs = require('fs-extra');
+var jScrambler = require('../jscrambler');
+var path = require('path');
+
+commander
+  .version(require('../package.json').version)
+  .usage('[source files] [options]')
+  .option('-c, --config [config]', 'JScrambler configuration options')
+  .option('-o, --output <output>', 'Output directory')
+  .option('-a, --access-key <accessKey>', 'Access key')
+  .option('-s, --secret-key <secretKey>', 'Secret key')
+  .parse(process.argv);
+
+if (!commander.output || !commander.accessKey || !commander.secretKey) {
+  console.log(commander.help());
+}
+
+var filesSrc = commander.args;
+var dest = commander.output;
+var accessKey = commander.accessKey;
+var secretKey = commander.secretKey;
+
+var config = commander.config && require(path.resolve(commander.config, '.')) || {};
+config.files = filesSrc;
+
+var client = new jScrambler.Client({
+  accessKey: accessKey,
+  secretKey: secretKey
+});
+
+jScrambler
+  .uploadCode(client, config)
+  .then(function (res) {
+    return jScrambler.downloadCode(client, res.id);
+  })
+  .then(function (res) {
+    fs.outputFileSync(dest, res);
+  });
