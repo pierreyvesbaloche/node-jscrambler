@@ -92,5 +92,20 @@ exports = module.exports =
       else deferred.resolve(JSON.parse(body));
     });
     return deferred.promise;
+  },
+  /**
+   * Deletes code through the API.
+   * @param {JScramblerClient} client
+   * @param {String} projectId
+   * @returns {Q.promise}
+   */
+  deleteCode: function (client, projectId) {
+    var deferred = Q.defer();
+    client.delete('/code/' + projectId + '.zip', null, function (err, res, body) {
+      if (err) deferred.reject(err);
+      else if (res.statusCode >= 400) deferred.reject(res);
+      else deferred.resolve(JSON.parse(body));
+    });
+    return deferred.promise;
   }
 };
