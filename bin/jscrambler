@@ -2,7 +2,6 @@
 'use strict';
 
 var commander = require('commander');
-var fs = require('fs-extra');
 var jScrambler = require('../jscrambler');
 var path = require('path');
 
@@ -38,5 +37,5 @@ jScrambler
     return jScrambler.downloadCode(client, res.id);
   })
   .then(function (res) {
-    fs.outputFileSync(dest, res);
+    return jScrambler.unzipProject(res, dest);
   });

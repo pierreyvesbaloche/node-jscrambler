@@ -1,12 +1,17 @@
-'use strict';
-var JScramblerClient = require('./jscrambler-client');
-var Q = require('q');
 /**
  * A facade to access JScrambler API using JScramblerClient.
  * @namespace jScramblerFacade
  * @author José Magalhães (magalhas@gmail.com)
  * @license MIT <http://opensource.org/licenses/MIT>
  */
+'use strict';
+
+var fs = require('fs-extra');
+var JScramblerClient = require('./jscrambler-client');
+var JSZip = require('jszip');
+var path = require('path');
+var Q = require('q');
+
 exports = module.exports =
 /** @lends jScramblerFacade */
 {
@@ -86,11 +91,13 @@ exports = module.exports =
    */
   uploadCode: function (client, params) {
     var deferred = Q.defer();
+    this.zipProject(params.files);
     client.post('/code.json', params, function (err, res, body) {
+      this.cleanZipProject();
       if (err) deferred.reject(err);
       else if (res.statusCode >= 400) deferred.reject(res);
       else deferred.resolve(JSON.parse(body));
-    });
+    }.bind(this));
     return deferred.promise;
   },
   /**
@@ -107,5 +114,35 @@ exports = module.exports =
       else deferred.resolve(JSON.parse(body));
     });
     return deferred.promise;
+  },
+  /**
+   * It cleans the temporary zip project.
+   */
+  cleanZipProject: function () {
+    fs.unlinkSync('.tmp.zip');
+  },
+  /**
+   * It zips all files inside the passed parameter into a single zip file.
+   */
+  zipProject: function (files) {
+    var zip = new JSZip();
+    for (var i = 0, l = files.length; i < l; ++i) {
+      zip.file(files[i], fs.readFileSync(files[i]));
+    }
+    fs.outputFileSync('.tmp.zip', zip.generate(), {encoding: 'base64'});
+    files[0] = '.tmp.zip';
+    files.length = 1;
+  },
+  /**
+   * It unzips a zip file to the given destination.
+   */
+  unzipProject: function (zipFile, dest) {
+    var zip = new JSZip(zipFile);
+    for (var file in zip.files) {
+      if (!zip.files[file].options.dir) {
+        var buffer = zip.file(file).asNodeBuffer();
+        fs.outputFileSync(path.join(dest, file), buffer);
+      }
+    }
   }
 };

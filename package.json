@@ -28,7 +28,8 @@
     "lodash": "^2.4.1",
     "needle": "^0.6.6",
     "commander": "^2.1.0",
-    "fs-extra": "^0.8.1"
+    "fs-extra": "^0.8.1",
+    "jszip": "^2.2.0"
   },
   "main": "jscrambler",
   "bin": "bin/jscrambler"
