@@ -61,6 +61,11 @@ function buildSortedQuery (params) {
   var query = '';
   for (var i = 0, l = keys.length; i < l; i++)
     query += encodeURIComponent(keys[i]) + '=' + encodeURIComponent(params[keys[i]]) + '&';
+  query = query
+            .replace(/\*/g, '%2A')
+            .replace(/[!'()]/g, escape)
+            .replace(/%7E/g, '~')
+            .replace(/\+/g, '%20');
   // Strip the last separator and return
   return query.substring(0, query.length - 1);
 }
