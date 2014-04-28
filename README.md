@@ -1,4 +1,4 @@
-# JSCrambler Client for Node.js
+# JScrambler Client for Node.js
 
 ## CLI
 ```shell
