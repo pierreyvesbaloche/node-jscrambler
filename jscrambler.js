@@ -127,7 +127,15 @@ exports = module.exports =
   zipProject: function (files) {
     var zip = new JSZip();
     for (var i = 0, l = files.length; i < l; ++i) {
-      zip.file(files[i], fs.readFileSync(files[i]));
+      var buffer, name;
+      if (files[i].contents) {
+        name = path.relative(files[i].cwd, files[i].path);
+        buffer = files[i].contents;
+      } else {
+        name = files[i];
+        buffer = fs.readFileSync(files[i]);
+      }
+      zip.file(name, buffer);
     }
     fs.outputFileSync('.tmp.zip', zip.generate(), {encoding: 'base64'});
     files[0] = '.tmp.zip';
@@ -141,7 +149,11 @@ exports = module.exports =
     for (var file in zip.files) {
       if (!zip.files[file].options.dir) {
         var buffer = zip.file(file).asNodeBuffer();
-        fs.outputFileSync(path.join(dest, file), buffer);
+        if (typeof dest === 'function') {
+          dest(buffer, file);
+        } else if (dest) {
+          fs.outputFileSync(path.join(dest, file), buffer);
+        }
       }
     }
   }
