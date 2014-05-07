@@ -37,7 +37,7 @@ exports = module.exports =
           path += '.zip';
         client.get(path, null, function (err, res, body) {
           if (err) deferred.reject(err);
-          else if (res.statusCode >= 400) deferred.reject(res);
+          else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
           else deferred.resolve(body);
         });
       });
@@ -52,7 +52,7 @@ exports = module.exports =
     var deferred = Q.defer();
     client.get('/code.json', null, function (err, res, body) {
       if (err) deferred.reject(err);
-      else if (res.statusCode >= 400) deferred.reject(res);
+      else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
       else deferred.resolve(JSON.parse(body));
     });
     return deferred.promise;
@@ -95,7 +95,7 @@ exports = module.exports =
     client.post('/code.json', params, function (err, res, body) {
       this.cleanZipProject();
       if (err) deferred.reject(err);
-      else if (res.statusCode >= 400) deferred.reject(res);
+      else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
       else deferred.resolve(JSON.parse(body));
     }.bind(this));
     return deferred.promise;
@@ -110,7 +110,7 @@ exports = module.exports =
     var deferred = Q.defer();
     client.delete('/code/' + projectId + '.zip', null, function (err, res, body) {
       if (err) deferred.reject(err);
-      else if (res.statusCode >= 400) deferred.reject(res);
+      else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
       else deferred.resolve(JSON.parse(body));
     });
     return deferred.promise;
