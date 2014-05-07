@@ -15,6 +15,16 @@ npm install -g jscrambler
       -a, --access-key <accessKey>  Access key
       -s, --secret-key <secretKey>  Secret key
 
+### Output to a single file
+```shell
+jscrambler input.js -a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -s XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX > output.js
+```
+
+### Output multiple files to a directory
+```shell
+jscrambler input1.js input2.js -o dest/ -a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -s XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
 ## API
 ```shell
 npm install jscrambler
