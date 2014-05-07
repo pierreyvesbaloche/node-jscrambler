@@ -9,12 +9,15 @@ commander
   .version(require('../package.json').version)
   .usage('[source files] [options]')
   .option('-c, --config [config]', 'JScrambler configuration options')
-  .option('-o, --output <output>', 'Output directory')
+  .option('-o, --output <output>', 'Output directory. If not specified the output is printed.')
   .option('-a, --access-key <accessKey>', 'Access key')
   .option('-s, --secret-key <secretKey>', 'Secret key')
   .parse(process.argv);
 
-if (!commander.output || !commander.accessKey || !commander.secretKey) {
+if (!commander.accessKey || !commander.secretKey) {
+  console.log(commander.help());
+} else if (!commander.output && commander.args.length > 1) {
+  console.error('Destination must be specified unless only one file is used as input.');
   console.log(commander.help());
 }
 
@@ -37,5 +40,14 @@ jScrambler
     return jScrambler.downloadCode(client, res.id);
   })
   .then(function (res) {
+    if (filesSrc.length === 1 && !dest) {
+      dest = function (buffer, file) {
+        console.log(buffer.toString());
+      }
+    }
     return jScrambler.unzipProject(res, dest);
+  })
+  .fail(function (err) {
+    console.error(err);
+    process.exit(1);
   });
