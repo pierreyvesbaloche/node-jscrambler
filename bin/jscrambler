@@ -2,6 +2,7 @@
 'use strict';
 
 var commander = require('commander');
+var glob = require('glob');
 var jScrambler = require('../jscrambler');
 var path = require('path');
 
@@ -15,13 +16,21 @@ commander
   .parse(process.argv);
 
 if (!commander.accessKey || !commander.secretKey) {
-  console.log(commander.help());
-} else if (!commander.output && commander.args.length > 1) {
-  console.error('Destination must be specified unless only one file is used as input.');
-  console.log(commander.help());
+  console.error('Access and secret keys must be provided to engage with the services.');
+  process.exit(1);
 }
 
-var filesSrc = commander.args;
+var filesSrc = [];
+var globSrc = commander.args;
+for (var i = 0, l = globSrc.length; i < l; ++i) {
+  filesSrc = filesSrc.concat(glob.sync(globSrc[i]));
+}
+
+if (!commander.output && filesSrc.length > 1) {
+  console.error('Destination must be specified unless only one file is used as input.');
+  process.exit(1);
+}
+
 var dest = commander.output;
 var accessKey = commander.accessKey;
 var secretKey = commander.secretKey;
