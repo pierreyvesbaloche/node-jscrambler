@@ -194,7 +194,7 @@ exports = module.exports =
       if (files[i].contents) {
         name = path.relative(files[i].cwd, files[i].path);
         buffer = files[i].contents;
-      } else {
+      } else if (!fs.lstatSync(files[i]).isDirectory()) {
         name = files[i];
         buffer = fs.readFileSync(files[i]);
       }
