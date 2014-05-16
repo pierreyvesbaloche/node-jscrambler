@@ -7,6 +7,7 @@
 'use strict';
 
 var fs = require('fs-extra');
+var glob = require('glob');
 var JScramblerClient = require('./jscrambler-client');
 var JSZip = require('jszip');
 var path = require('path');
@@ -114,6 +115,68 @@ exports = module.exports =
       else deferred.resolve(JSON.parse(body));
     });
     return deferred.promise;
+  },
+  /**
+   * Common operation sequence intended when using the client. First it
+   * uploads a project, then it polls the server to download and unzip the
+   * project into a folder.
+   * @param {String|Object} configPathOrObject
+   * @returns {Q.promise}
+   */
+  process: function (configPathOrObject, destCallback) {
+    var config = typeof configPathOrObject === 'string' ?
+          require(configPathOrObject) : configPathOrObject;
+    if (!config.keys || !config.keys.accessKey || !config.keys.secretKey) {
+      throw new Exception('Access key and secret key must be provided in the configuration file.');
+    }
+    var accessKey = config.keys.accessKey;
+    var secretKey = config.keys.secretKey;
+    var host = config.host;
+    var port = config.port;
+    var apiVersion = config.apiVersion;
+    // Instance a JScrambler client
+    var client = new this.Client({
+      accessKey: accessKey,
+      secretKey: secretKey,
+      host: host,
+      port: port,
+      apiVersion: apiVersion
+    });
+    // Check for source files and add them to the parameters
+    if (!config.filesSrc) {
+      throw new Exception('Source files must be provided.');
+    }
+    // Check if output directory was provided
+    if (!config.filesDest && !destCallback) {
+      throw new Exception('Output directory must be provided.');
+    }
+    var filesSrc = [];
+    for (var i = 0, l = config.filesSrc.length; i < l; ++i) {
+      if (typeof config.filesSrc[i] === 'string') {
+        filesSrc = filesSrc.concat(glob.sync(config.filesSrc[i]));
+      } else {
+        filesSrc.push(config.filesSrc[i]);
+      }
+    }
+    // Prepare object to post
+    var params = config.params || {};
+    params.files = filesSrc;
+    var self = this;
+    var projectId;
+    return this
+      .uploadCode(client, params)
+      .then(function (res) {
+        projectId = res.id;
+        return self.downloadCode(client, res.id);
+      })
+      .then(function (res) {
+        return self.unzipProject(res, config.filesDest || destCallback);
+      })
+      .then(function () {
+        if (config.deleteProject) {
+          return self.deleteCode(client, projectId);
+        }
+      });
   },
   /**
    * It cleans the temporary zip project.
