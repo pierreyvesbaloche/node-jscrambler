@@ -158,7 +158,7 @@ JScramblerClient.prototype.get = function (path, params, callback) {
  */
 JScramblerClient.prototype.request = function (method, path, params, callback) {
   var signedData;
-  var options = {};
+  var options = {timeout: 0};
   if (!params) params = {};
   // If post sign data and set the request as multipart
   if (method === 'POST') {
