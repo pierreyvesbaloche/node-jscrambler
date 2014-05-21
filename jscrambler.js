@@ -194,13 +194,17 @@ exports = module.exports =
       if (files[i].contents) {
         name = path.relative(files[i].cwd, files[i].path);
         buffer = files[i].contents;
-      } else if (!fs.lstatSync(files[i]).isDirectory()) {
+      } else if (!fs.statSync(files[i]).isDirectory()) {
         name = files[i];
         buffer = fs.readFileSync(files[i]);
+      } else {
+        zip.folder(files[i]);
       }
-      zip.file(name, buffer);
+      if (name) {
+        zip.file(name, buffer);
+      }
     }
-    fs.outputFileSync('.tmp.zip', zip.generate(), {encoding: 'base64'});
+    fs.outputFileSync('.tmp.zip', zip.generate({type: 'nodebuffer'}), {encoding: 'base64'});
     files[0] = '.tmp.zip';
     files.length = 1;
   },
