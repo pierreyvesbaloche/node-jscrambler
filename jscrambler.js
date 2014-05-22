@@ -37,10 +37,17 @@ exports = module.exports =
         } else if (!/^.*\.zip$/.test(projectId))
           path += '.zip';
         client.get(path, null, function (err, res, body) {
-          if (err) deferred.reject(err);
-          else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
-          else deferred.resolve(body);
+          try {
+            if (err) deferred.reject(err);
+            else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
+            else deferred.resolve(body);
+          } catch (ex) {
+            deferred.reject(body);
+          }
         });
+      })
+      .fail(function () {
+        deferred.reject.apply(null, arguments);
       });
     return deferred.promise;
   },
@@ -49,12 +56,17 @@ exports = module.exports =
    * @param {JScramblerClient} client
    * @returns {Q.promise}
    */
-  getInfo: function (client) {
+  getInfo: function (client, projectId) {
     var deferred = Q.defer();
-    client.get('/code.json', null, function (err, res, body) {
-      if (err) deferred.reject(err);
-      else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
-      else deferred.resolve(JSON.parse(body));
+    var path = projectId ? '/code/' + projectId + '.json' : '/code.json';
+    client.get(path, null, function (err, res, body) {
+      try {
+        if (err) deferred.reject(err);
+        else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
+        else deferred.resolve(JSON.parse(body));
+      } catch (ex) {
+        deferred.reject(body);
+      }
     });
     return deferred.promise;
   },
@@ -65,20 +77,22 @@ exports = module.exports =
     var deferred = Q.defer();
     var isFinished = function () {
       this
-        .getInfo(client)
+        .getInfo(client, projectId)
         .then(function (res) {
-          for (var i = 0, l = res.length; i < l; ++i) {
-            // Find projectId inside the response
-            if (res[i].id === projectId) {
-              // Did it finish?
-              if (res[i].finished_at) {
-                deferred.resolve();
-                return;
-              }
+          // Did it finish?
+          if (res.finished_at) {
+            if (res.error_id && res.error_id !== '0') {
+              deferred.reject(res);
+            } else {
+              deferred.resolve();
             }
+            return;
           }
           // Try again later...
           setTimeout(isFinished, 1000);
+        })
+        .fail(function () {
+          deferred.reject.apply(null, arguments);
         });
     }.bind(this);
     isFinished();
@@ -95,9 +109,13 @@ exports = module.exports =
     this.zipProject(params.files);
     client.post('/code.json', params, function (err, res, body) {
       this.cleanZipProject();
-      if (err) deferred.reject(err);
-      else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
-      else deferred.resolve(JSON.parse(body));
+      try {
+        if (err) deferred.reject(err);
+        else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
+        else deferred.resolve(JSON.parse(body));
+      } catch (ex) {
+        deferred.reject(body);
+      }
     }.bind(this));
     return deferred.promise;
   },
@@ -110,9 +128,13 @@ exports = module.exports =
   deleteCode: function (client, projectId) {
     var deferred = Q.defer();
     client.delete('/code/' + projectId + '.zip', null, function (err, res, body) {
-      if (err) deferred.reject(err);
-      else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
-      else deferred.resolve(JSON.parse(body));
+      try {
+        if (err) deferred.reject(err);
+        else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
+        else deferred.resolve(JSON.parse(body));
+      } catch (ex) {
+        deferred.reject(body);
+      }
     });
     return deferred.promise;
   },
