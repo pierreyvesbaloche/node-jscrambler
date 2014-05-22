@@ -10,9 +10,12 @@ commander
   .version(require('../package.json').version)
   .usage('[source files] [options]')
   .option('-c, --config [config]', 'JScrambler configuration options')
-  .option('-o, --output <output>', 'Output directory. If not specified the output is printed.')
+  .option('-o, --output [output]', 'Output directory. If not specified the output is printed.')
   .option('-a, --access-key <accessKey>', 'Access key')
   .option('-s, --secret-key <secretKey>', 'Secret key')
+  .option('-h, --host [host]', 'Hostname')
+  .option('-p, --port [port]', 'Port')
+  .option('-v, --api-version [apiVersion]', 'Version')
   .parse(process.argv);
 
 if (!commander.accessKey || !commander.secretKey) {
@@ -34,13 +37,19 @@ if (!commander.output && filesSrc.length > 1) {
 var dest = commander.output;
 var accessKey = commander.accessKey;
 var secretKey = commander.secretKey;
+var host = commander.host;
+var port = commander.port && parseInt(commander.port);
+var apiVersion = commander.apiVersion;
 
 var config = commander.config && require(path.resolve(commander.config, '.')) || {};
 config.files = filesSrc;
 
 var client = new jScrambler.Client({
   accessKey: accessKey,
-  secretKey: secretKey
+  secretKey: secretKey,
+  host: host,
+  port: port,
+  apiVersion: apiVersion
 });
 
 jScrambler
