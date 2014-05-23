@@ -29,8 +29,8 @@
     "needle": "^0.6.6",
     "commander": "^2.1.0",
     "fs-extra": "^0.8.1",
-    "jszip": "^2.2.0",
-    "glob": "^3.2.9"
+    "jszip": "^2.2.2",
+    "glob": "^3.2.11"
   },
   "main": "jscrambler",
   "bin": "bin/jscrambler"
