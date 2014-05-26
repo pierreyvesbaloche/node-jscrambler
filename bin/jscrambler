@@ -18,20 +18,34 @@ commander
   .option('-v, --api-version [apiVersion]', 'Version')
   .parse(process.argv);
 
+var filesSrc = [];
+var globSrc, params;
+if (commander.args.length === 1 && /^.*\.json$/.test(commander.args[0])) {
+  var configFile = require(path.resolve(commander.args[0], '.'));
+  globSrc = configFile.filesSrc;
+  commander.output = configFile.filesDest;
+  commander.accessKey = configFile.keys.accessKey;
+  commander.secretKey = configFile.keys.secretKey;
+  commander.host = configFile.host;
+  commander.port = configFile.port;
+  commander.apiVersion = configFile.apiVersion;
+  params = configFile.params;
+} else {
+  globSrc = commander.args;
+}
+
 if (!commander.accessKey || !commander.secretKey) {
   console.error('Access and secret keys must be provided to engage with the services.');
   process.exit(1);
 }
 
-var filesSrc = [];
-var globSrc = commander.args;
-for (var i = 0, l = globSrc.length; i < l; ++i) {
-  filesSrc = filesSrc.concat(glob.sync(globSrc[i]));
-}
-
 if (!commander.output && filesSrc.length > 1) {
   console.error('Destination must be specified unless only one file is used as input.');
   process.exit(1);
+}
+
+for (var i = 0, l = globSrc.length; i < l; ++i) {
+  filesSrc = filesSrc.concat(glob.sync(globSrc[i]));
 }
 
 var dest = commander.output;
@@ -41,7 +55,7 @@ var host = commander.host;
 var port = commander.port && parseInt(commander.port);
 var apiVersion = commander.apiVersion;
 
-var config = commander.config && require(path.resolve(commander.config, '.')) || {};
+var config = commander.config && require(path.resolve(commander.config, '.')) || params || {};
 config.files = filesSrc;
 
 var client = new jScrambler.Client({
