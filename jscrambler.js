@@ -210,7 +210,9 @@ exports = module.exports =
    * It zips all files inside the passed parameter into a single zip file.
    */
   zipProject: function (files) {
+    var hasFiles = false;
     if (files.length === 1 && /^.*\.zip$/.test(files[0])) {
+      hasFiles = true;
       fs.outputFileSync('.tmp.zip', fs.readFileSync(files[0]));
     } else {
       var zip = new JSZip();
@@ -226,12 +228,17 @@ exports = module.exports =
           zip.folder(files[i]);
         }
         if (name) {
+          hasFiles = true;
           zip.file(name, buffer);
         }
       }
-      fs.outputFileSync('.tmp.zip', zip.generate({type: 'nodebuffer'}), {encoding: 'base64'});
-      files[0] = '.tmp.zip';
-      files.length = 1;
+      if (hasFiles) {
+        fs.outputFileSync('.tmp.zip', zip.generate({type: 'nodebuffer'}), {encoding: 'base64'});
+        files[0] = '.tmp.zip';
+        files.length = 1;
+      } else {
+        throw new Error('No source files found. If you intend to send a whole directory sufix your path with "**" (e.g. ./my-directory/**)');
+      }
     }
   },
   /**
