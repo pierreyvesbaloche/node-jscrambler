@@ -210,25 +210,29 @@ exports = module.exports =
    * It zips all files inside the passed parameter into a single zip file.
    */
   zipProject: function (files) {
-    var zip = new JSZip();
-    for (var i = 0, l = files.length; i < l; ++i) {
-      var buffer, name;
-      if (files[i].contents) {
-        name = path.relative(files[i].cwd, files[i].path);
-        buffer = files[i].contents;
-      } else if (!fs.statSync(files[i]).isDirectory()) {
-        name = files[i];
-        buffer = fs.readFileSync(files[i]);
-      } else {
-        zip.folder(files[i]);
+    if (files.length === 1 && /^.*\.zip$/.test(files[0])) {
+      fs.outputFileSync('.tmp.zip', fs.readFileSync(files[0]));
+    } else {
+      var zip = new JSZip();
+      for (var i = 0, l = files.length; i < l; ++i) {
+        var buffer, name;
+        if (files[i].contents) {
+          name = path.relative(files[i].cwd, files[i].path);
+          buffer = files[i].contents;
+        } else if (!fs.statSync(files[i]).isDirectory()) {
+          name = files[i];
+          buffer = fs.readFileSync(files[i]);
+        } else {
+          zip.folder(files[i]);
+        }
+        if (name) {
+          zip.file(name, buffer);
+        }
       }
-      if (name) {
-        zip.file(name, buffer);
-      }
+      fs.outputFileSync('.tmp.zip', zip.generate({type: 'nodebuffer'}), {encoding: 'base64'});
+      files[0] = '.tmp.zip';
+      files.length = 1;
     }
-    fs.outputFileSync('.tmp.zip', zip.generate({type: 'nodebuffer'}), {encoding: 'base64'});
-    files[0] = '.tmp.zip';
-    files.length = 1;
   },
   /**
    * It unzips a zip file to the given destination.
