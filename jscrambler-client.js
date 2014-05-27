@@ -125,7 +125,8 @@ function handleFileParams (params) {
 function signedParams (method, path, params) {
   _.defaults(params, {
     access_key: this.options.accessKey,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    user_agent: 'Node'
   });
   if (method === 'POST' && params.files) handleFileParams(params);
   params.signature = generateHmacSignature.apply(this, arguments);
