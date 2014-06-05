@@ -106,7 +106,7 @@ exports = module.exports =
    */
   uploadCode: function (client, params) {
     var deferred = Q.defer();
-    this.zipProject(params.files);
+    this.zipProject(params.files, params.cwd);
     client.post('/code.json', params, function (err, res, body) {
       this.cleanZipProject();
       try {
@@ -207,9 +207,10 @@ exports = module.exports =
     fs.unlinkSync('.tmp.zip');
   },
   /**
-   * It zips all files inside the passed parameter into a single zip file.
+   * It zips all files inside the passed parameter into a single zip file. It
+   * accepts an optional `cwd` parameter.
    */
-  zipProject: function (files) {
+  zipProject: function (files, cwd) {
     var hasFiles = false;
     if (files.length === 1 && /^.*\.zip$/.test(files[0])) {
       hasFiles = true;
@@ -218,14 +219,20 @@ exports = module.exports =
       var zip = new JSZip();
       for (var i = 0, l = files.length; i < l; ++i) {
         var buffer, name;
+        var path = cwd ? cwd + '/' + files[i] : files[i];
+        // If buffer
         if (files[i].contents) {
           name = path.relative(files[i].cwd, files[i].path);
           buffer = files[i].contents;
-        } else if (!fs.statSync(files[i]).isDirectory()) {
+        }
+        // Else if it's a path and not a directory
+        else if (!fs.statSync(path).isDirectory()) {
           name = files[i];
-          buffer = fs.readFileSync(files[i]);
-        } else {
-          zip.folder(files[i]);
+          buffer = fs.readFileSync(path);
+        }
+        // Else if it's a directory path
+        else {
+          zip.folder(path);
         }
         if (name) {
           hasFiles = true;
