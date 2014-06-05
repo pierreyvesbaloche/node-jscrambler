@@ -107,6 +107,7 @@ exports = module.exports =
   uploadCode: function (client, params) {
     var deferred = Q.defer();
     this.zipProject(params.files, params.cwd);
+    delete params.cwd;
     client.post('/code.json', params, function (err, res, body) {
       this.cleanZipProject();
       try {
