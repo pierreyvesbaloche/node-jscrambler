@@ -1,7 +1,7 @@
 {
   "name": "jscrambler",
   "description": "JScrambler API client.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "homepage": "https://github.com/auditmark/node-jscrambler",
   "author": {
     "name": "magalhas",
@@ -30,7 +30,7 @@
     "commander": "^2.1.0",
     "fs-extra": "^0.8.1",
     "jszip": "^2.2.2",
-    "glob": "^3.2.11"
+    "glob": "^4.0.2"
   },
   "main": "jscrambler",
   "bin": "bin/jscrambler"
