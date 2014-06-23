@@ -45,7 +45,7 @@ if (!commander.output && filesSrc.length > 1) {
 }
 
 for (var i = 0, l = globSrc.length; i < l; ++i) {
-  filesSrc = filesSrc.concat(glob.sync(globSrc[i]));
+  filesSrc = filesSrc.concat(glob.sync(globSrc[i], {dot: true}));
 }
 
 var dest = commander.output;

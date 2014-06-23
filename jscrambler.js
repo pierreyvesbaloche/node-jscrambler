@@ -176,7 +176,7 @@ exports = module.exports =
     var filesSrc = [];
     for (var i = 0, l = config.filesSrc.length; i < l; ++i) {
       if (typeof config.filesSrc[i] === 'string') {
-        filesSrc = filesSrc.concat(glob.sync(config.filesSrc[i]));
+        filesSrc = filesSrc.concat(glob.sync(config.filesSrc[i], {dot: true}));
       } else {
         filesSrc.push(config.filesSrc[i]);
       }
