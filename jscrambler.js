@@ -6,6 +6,7 @@
  */
 'use strict';
 
+var _ = require('lodash');
 var fs = require('fs-extra');
 var glob = require('glob');
 var JScramblerClient = require('./jscrambler-client');
@@ -254,13 +255,21 @@ exports = module.exports =
    */
   unzipProject: function (zipFile, dest) {
     var zip = new JSZip(zipFile);
+    var size = _.size(zip.files);
     for (var file in zip.files) {
       if (!zip.files[file].options.dir) {
         var buffer = zip.file(file).asNodeBuffer();
         if (typeof dest === 'function') {
           dest(buffer, file);
         } else if (dest) {
-          fs.outputFileSync(path.join(dest, file), buffer);
+          var lastDestChar = dest[dest.length - 1];
+          var destPath;
+          if (size === 1 && lastDestChar !== '/' && lastDestChar !== '\\') {
+            destPath = dest;
+          } else {
+            destPath = path.join(dest, file);
+          }
+          fs.outputFileSync(destPath, buffer);
         }
       }
     }
