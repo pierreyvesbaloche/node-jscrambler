@@ -214,12 +214,17 @@ exports = module.exports =
    */
   zipProject: function (files, cwd) {
     var hasFiles = false;
+    // If it's already a zip file
     if (files.length === 1 && /^.*\.zip$/.test(files[0])) {
       hasFiles = true;
       fs.outputFileSync('.tmp.zip', fs.readFileSync(files[0]));
     } else {
       var zip = new JSZip();
       for (var i = 0, l = files.length; i < l; ++i) {
+        // Bypass unwanted patterns from `files`
+        if (/.*\.(git|hg)(\/.*|$)/.test(files[i].path || files[i])) {
+          continue;
+        }
         var buffer, name;
         var path = cwd ? cwd + '/' + files[i] : files[i];
         // If buffer
