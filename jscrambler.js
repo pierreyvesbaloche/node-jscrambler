@@ -221,25 +221,32 @@ exports = module.exports =
     } else {
       var zip = new JSZip();
       for (var i = 0, l = files.length; i < l; ++i) {
+        // Sanitise path
+        if (typeof files[i] === 'string') {
+          files[i] = path.normalize(files[i]);
+          if (files[i].indexOf('../') === 0) {
+            files[i] = path.resolve(files[i]);
+          }
+        }
         // Bypass unwanted patterns from `files`
         if (/.*\.(git|hg)(\/.*|$)/.test(files[i].path || files[i])) {
           continue;
         }
         var buffer, name;
-        var path = cwd ? cwd + '/' + files[i] : files[i];
+        var sPath = cwd ? cwd + '/' + files[i] : files[i];
         // If buffer
         if (files[i].contents) {
           name = path.relative(files[i].cwd, files[i].path);
           buffer = files[i].contents;
         }
         // Else if it's a path and not a directory
-        else if (!fs.statSync(path).isDirectory()) {
+        else if (!fs.statSync(sPath).isDirectory()) {
           name = files[i];
-          buffer = fs.readFileSync(path);
+          buffer = fs.readFileSync(sPath);
         }
         // Else if it's a directory path
         else {
-          zip.folder(path);
+          zip.folder(sPath);
         }
         if (name) {
           hasFiles = true;
