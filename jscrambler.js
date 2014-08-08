@@ -13,6 +13,7 @@ var JScramblerClient = require('./jscrambler-client');
 var JSZip = require('jszip');
 var path = require('path');
 var Q = require('q');
+var temp = require('temp').track();
 
 exports = module.exports =
 /** @lends jScramblerFacade */
@@ -110,7 +111,6 @@ exports = module.exports =
     this.zipProject(params.files, params.cwd);
     delete params.cwd;
     client.post('/code.json', params, function (err, res, body) {
-      this.cleanZipProject();
       try {
         if (err) deferred.reject(err);
         else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
@@ -203,12 +203,6 @@ exports = module.exports =
       });
   },
   /**
-   * It cleans the temporary zip project.
-   */
-  cleanZipProject: function () {
-    fs.unlinkSync('.tmp.zip');
-  },
-  /**
    * It zips all files inside the passed parameter into a single zip file. It
    * accepts an optional `cwd` parameter.
    */
@@ -217,7 +211,7 @@ exports = module.exports =
     // If it's already a zip file
     if (files.length === 1 && /^.*\.zip$/.test(files[0])) {
       hasFiles = true;
-      fs.outputFileSync('.tmp.zip', fs.readFileSync(files[0]));
+      fs.outputFileSync(temp.openSync({suffix: '.zip'}).path, fs.readFileSync(files[0]));
     } else {
       var zip = new JSZip();
       for (var i = 0, l = files.length; i < l; ++i) {
@@ -254,8 +248,9 @@ exports = module.exports =
         }
       }
       if (hasFiles) {
-        fs.outputFileSync('.tmp.zip', zip.generate({type: 'nodebuffer'}), {encoding: 'base64'});
-        files[0] = '.tmp.zip';
+        var tempFile = temp.openSync({suffix: '.zip'});
+        fs.outputFileSync(tempFile.path, zip.generate({type: 'nodebuffer'}), {encoding: 'base64'});
+        files[0] = tempFile.path;
         files.length = 1;
       } else {
         throw new Error('No source files found. If you intend to send a whole directory sufix your path with "**" (e.g. ./my-directory/**)');
