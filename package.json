@@ -1,7 +1,7 @@
 {
   "name": "jscrambler",
   "description": "JScrambler API client.",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "homepage": "https://github.com/auditmark/node-jscrambler",
   "author": {
     "name": "magalhas",
@@ -24,13 +24,14 @@
     "node": ">= 0.8.0"
   },
   "dependencies": {
-    "q": "^1.0.1",
-    "lodash": "^2.4.1",
-    "needle": "^0.6.6",
     "commander": "^2.1.0",
     "fs-extra": "^0.8.1",
+    "glob": "^4.0.2",
     "jszip": "^2.2.2",
-    "glob": "^4.0.2"
+    "lodash": "^2.4.1",
+    "needle": "^0.6.6",
+    "q": "^1.0.1",
+    "temp": "^0.8.1"
   },
   "main": "jscrambler",
   "bin": "bin/jscrambler"
