@@ -55,7 +55,13 @@ var host = commander.host;
 var port = commander.port && parseInt(commander.port);
 var apiVersion = commander.apiVersion;
 
-var config = commander.config && require(path.resolve(commander.config, '.')) || params || {};
+var config;
+if (commander.config) {
+  config = require(path.resolve(commander.config, '.'));
+  config = config.params || config || params || {};
+} else {
+  config = {};
+}
 config.files = filesSrc;
 
 var client = new jScrambler.Client({
