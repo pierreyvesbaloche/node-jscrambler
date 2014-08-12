@@ -14,6 +14,9 @@ var JSZip = require('jszip');
 var path = require('path');
 var Q = require('q');
 var temp = require('temp').track();
+var util = require('util');
+
+var debug = !!process.env.DEBUG;
 
 exports = module.exports =
 /** @lends jScramblerFacade */
@@ -28,6 +31,7 @@ exports = module.exports =
    */
   downloadCode: function (client, projectId, sourceId) {
     var deferred = Q.defer();
+    debug && console.log('Downloading code', projectId, sourceId);
     this
       .pollProject(client, projectId)
       .then(function () {
@@ -61,6 +65,7 @@ exports = module.exports =
   getInfo: function (client, projectId) {
     var deferred = Q.defer();
     var path = projectId ? '/code/' + projectId + '.json' : '/code.json';
+    debug && console.log('Getting info', projectId);
     client.get(path, null, function (err, res, body) {
       try {
         if (err) deferred.reject(err);
@@ -78,6 +83,7 @@ exports = module.exports =
   pollProject: function (client, projectId) {
     var deferred = Q.defer();
     var isFinished = function () {
+      debug && console.log('Polling project', projectId);
       this
         .getInfo(client, projectId)
         .then(function (res) {
@@ -110,6 +116,7 @@ exports = module.exports =
     var deferred = Q.defer();
     this.zipProject(params.files, params.cwd);
     delete params.cwd;
+    debug && console.log('Uploading code', util.inspect(params));
     client.post('/code.json', params, function (err, res, body) {
       try {
         if (err) deferred.reject(err);
@@ -129,6 +136,7 @@ exports = module.exports =
    */
   deleteCode: function (client, projectId) {
     var deferred = Q.defer();
+    debug && console.log('Deleting project', projectId);
     client.delete('/code/' + projectId + '.zip', null, function (err, res, body) {
       try {
         if (err) deferred.reject(err);
@@ -207,6 +215,7 @@ exports = module.exports =
    * accepts an optional `cwd` parameter.
    */
   zipProject: function (files, cwd) {
+    debug && console.log('Zipping files', util.inspect(files));
     var hasFiles = false;
     // If it's already a zip file
     if (files.length === 1 && /^.*\.zip$/.test(files[0])) {
