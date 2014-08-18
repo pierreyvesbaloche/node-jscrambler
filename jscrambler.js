@@ -159,7 +159,7 @@ exports = module.exports =
     var config = typeof configPathOrObject === 'string' ?
           require(configPathOrObject) : configPathOrObject;
     if (!config.keys || !config.keys.accessKey || !config.keys.secretKey) {
-      throw new Exception('Access key and secret key must be provided in the configuration file.');
+      throw new Error('Access key and secret key must be provided in the configuration file.');
     }
     var accessKey = config.keys.accessKey;
     var secretKey = config.keys.secretKey;
@@ -176,11 +176,11 @@ exports = module.exports =
     });
     // Check for source files and add them to the parameters
     if (!config.filesSrc) {
-      throw new Exception('Source files must be provided.');
+      throw new Error('Source files must be provided.');
     }
     // Check if output directory was provided
     if (!config.filesDest && !destCallback) {
-      throw new Exception('Output directory must be provided.');
+      throw new Error('Output directory must be provided.');
     }
     var filesSrc = [];
     for (var i = 0, l = config.filesSrc.length; i < l; ++i) {
