@@ -92,7 +92,7 @@ exports = module.exports =
             if (res.error_id && res.error_id !== '0') {
               deferred.reject(res);
             } else {
-              deferred.resolve();
+              deferred.resolve(res);
             }
             return;
           }
@@ -114,8 +114,12 @@ exports = module.exports =
    */
   uploadCode: function (client, params) {
     var deferred = Q.defer();
+
+    params = _.extend({}, params);
+    params.files = params.files.slice();
     this.zipProject(params.files, params.cwd);
     delete params.cwd;
+
     debug && console.log('Uploading code', util.inspect(params));
     client.post('/code.json', params, function (err, res, body) {
       try {
