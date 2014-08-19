@@ -1,9 +1,10 @@
-/* global describe, beforeEach, it, expect, spyOn, Buffer, jasmine */
+/* global describe, beforeEach, it, expect, spyOn, Buffer, jasmine, console */
 
 var _ = require('lodash');
 var fs = require('fs');
 var jScrambler = require('../../jscrambler');
 var jScramblerKeys = require('../../jscrambler_keys');
+var util = require('util');
 
 describe('JScrambler Client', function () {
   var jScramblerClient, projectId, downloadedBuffer;
@@ -51,7 +52,7 @@ describe('JScrambler Client', function () {
           projectId = res.id;
         })
         .catch(function (error) {
-          throw error;
+          console.log(util.inspect(error));
         })
         .fin(done);
     });
@@ -72,7 +73,7 @@ describe('JScrambler Client', function () {
           }
         })
         .catch(function (error) {
-          throw error;
+          console.log(util.inspect(error));
         })
         .fin(done);
     });
@@ -95,7 +96,7 @@ describe('JScrambler Client', function () {
           expect(finishedAt instanceof Date).toBeTruthy();
         })
         .catch(function (error) {
-          throw error;
+          console.log(util.inspect(error));
         })
         .fin(done);
     });
@@ -110,7 +111,7 @@ describe('JScrambler Client', function () {
           downloadedBuffer = res;
         })
         .catch(function (error) {
-          throw error;
+          console.log(util.inspect(error));
         })
         .fin(done);
     });
@@ -135,7 +136,7 @@ describe('JScrambler Client', function () {
           }
         })
         .catch(function (error) {
-          throw error;
+          console.log(util.inspect(error));
         })
         .fin(done);
     });
