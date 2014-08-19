@@ -240,7 +240,12 @@ exports = module.exports =
           continue;
         }
         var buffer, name;
-        var sPath = cwd ? cwd + '/' + files[i] : files[i];
+        var sPath;
+        if (cwd && files[i].indexOf(cwd) !== 0) {
+          sPath = path.join(cwd, files[i]);
+        } else {
+          sPath = files[i];
+        }
         // If buffer
         if (files[i].contents) {
           name = path.relative(files[i].cwd, files[i].path);
@@ -248,7 +253,11 @@ exports = module.exports =
         }
         // Else if it's a path and not a directory
         else if (!fs.statSync(sPath).isDirectory()) {
-          name = files[i];
+          if (cwd && files[i].indexOf(cwd) === 0) {
+            name = files[i].substring(cwd.length);
+          } else {
+            name = files[i];
+          }
           buffer = fs.readFileSync(sPath);
         }
         // Else if it's a directory path
