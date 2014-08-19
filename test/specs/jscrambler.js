@@ -1,6 +1,6 @@
 /* global describe, beforeEach, it, expect, spyOn, Buffer, jasmine */
 
-var _ = require('underscore');
+var _ = require('lodash');
 var fs = require('fs');
 var jScrambler = require('../../jscrambler');
 var jScramblerKeys = require('../../jscrambler_keys');
