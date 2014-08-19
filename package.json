@@ -20,6 +20,9 @@
       "url": "https://github.com/auditmark/node-jscrambler/blob/master/LICENSE-MIT"
     }
   ],
+  "scripts": {
+    "test": "grunt test 2> /dev/null"
+  },
   "engines": {
     "node": ">= 0.8.0"
   },
@@ -34,5 +37,10 @@
     "temp": "^0.8.1"
   },
   "main": "jscrambler",
-  "bin": "bin/jscrambler"
+  "bin": "bin/jscrambler",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-jasmine-node": "^0.2.1"
+  }
 }
