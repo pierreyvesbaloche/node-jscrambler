@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "commander": "^2.1.0",
+    "flavored-path": "0.0.8",
     "fs-extra": "^0.8.1",
     "glob": "^4.0.2",
     "jszip": "^2.2.2",

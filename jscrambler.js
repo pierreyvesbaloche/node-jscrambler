@@ -11,7 +11,7 @@ var fs = require('fs-extra');
 var glob = require('glob');
 var JScramblerClient = require('./jscrambler-client');
 var JSZip = require('jszip');
-var path = require('path');
+var path = require('flavored-path');
 var Q = require('q');
 var temp = require('temp').track();
 var util = require('util');
@@ -221,6 +221,7 @@ exports = module.exports =
   zipProject: function (files, cwd) {
     debug && console.log('Zipping files', util.inspect(files));
     var hasFiles = false;
+    cwd = path.normalize(cwd);
     // If it's already a zip file
     if (files.length === 1 && /^.*\.zip$/.test(files[0])) {
       hasFiles = true;
