@@ -220,8 +220,12 @@ exports = module.exports =
    */
   zipProject: function (files, cwd) {
     debug && console.log('Zipping files', util.inspect(files));
+    // Flag to detect if any file was added to the zip archive
     var hasFiles = false;
-    cwd = path.normalize(cwd);
+    // Sanitize `cwd`
+    if (cwd) {
+      cwd = path.normalize(cwd);
+    }
     // If it's already a zip file
     if (files.length === 1 && /^.*\.zip$/.test(files[0])) {
       hasFiles = true;
