@@ -20,6 +20,7 @@
   "validthis": true,
   "expr": true,
   "globals": {
+    "Buffer": true,
     "define": true,
     "module": true,
     "require": true,

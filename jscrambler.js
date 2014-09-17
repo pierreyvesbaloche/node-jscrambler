@@ -45,8 +45,15 @@ exports = module.exports =
         client.get(path, null, function (err, res, body) {
           try {
             if (err) deferred.reject(err);
-            else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
-            else deferred.resolve(body);
+            else if (res.statusCode >= 400) {
+              if (Buffer.isBuffer(body)) {
+                deferred.reject(JSON.parse(body));
+              } else {
+                deferred.reject(body);
+              }
+            } else {
+              deferred.resolve(body);
+            }
           } catch (ex) {
             deferred.reject(body);
           }
@@ -69,8 +76,19 @@ exports = module.exports =
     client.get(path, null, function (err, res, body) {
       try {
         if (err) deferred.reject(err);
-        else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
-        else deferred.resolve(JSON.parse(body));
+        else if (res.statusCode >= 400) {
+          if (Buffer.isBuffer(body)) {
+            deferred.reject(JSON.parse(body));
+          } else {
+            deferred.reject(body);
+          }
+        } else {
+          if (Buffer.isBuffer(body)) {
+            deferred.resolve(JSON.parse(body));
+          } else {
+            deferred.resolve(body);
+          }
+        }
       } catch (ex) {
         deferred.reject(body);
       }
@@ -124,8 +142,19 @@ exports = module.exports =
     client.post('/code.json', params, function (err, res, body) {
       try {
         if (err) deferred.reject(err);
-        else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
-        else deferred.resolve(JSON.parse(body));
+        else if (res.statusCode >= 400) {
+          if (Buffer.isBuffer(body)) {
+            deferred.reject(JSON.parse(body));
+          } else {
+            deferred.reject(body);
+          }
+        } else {
+          if (Buffer.isBuffer(body)) {
+            deferred.resolve(JSON.parse(body));
+          } else {
+            deferred.resolve(body);
+          }
+        }
       } catch (ex) {
         deferred.reject(body);
       }
@@ -144,8 +173,20 @@ exports = module.exports =
     client.delete('/code/' + projectId + '.zip', null, function (err, res, body) {
       try {
         if (err) deferred.reject(err);
-        else if (res.statusCode >= 400) deferred.reject(JSON.parse(body));
-        else deferred.resolve(JSON.parse(body));
+        else if (res.statusCode >= 400) {
+          if (Buffer.isBuffer(body)) {
+            deferred.reject(JSON.parse(body));
+          } else {
+            deferred.reject(body);
+          }
+        }
+        else {
+          if (Buffer.isBuffer(body)) {
+            deferred.resolve(JSON.parse(body));
+          } else {
+            deferred.resolve(body);
+          }
+        }
       } catch (ex) {
         deferred.reject(body);
       }
