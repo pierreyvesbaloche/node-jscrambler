@@ -217,6 +217,7 @@ Type: `String`
 `starter` - Standard protection and optimization behavior. Enough for most JavaScript applications
 `mobile` - Transformations are applied having into account the limitations and needs of mobile devices
 `html5` - Protects your HTML5 and Web Gaming applications by targeting the new HTML5 features
+`nodejs` - Protects your Node.js application
 
 ### name_prefix
 Type: `String`
