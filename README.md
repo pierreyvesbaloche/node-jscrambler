@@ -95,15 +95,15 @@ Locks a JavaScript application to run only on a specific Browser or Operating Sy
 
 available values:
 
-* firefox
-* chrome
-* iexplorer
-* linux
-* windows
-* mac_os
-* tizen
-* android
-* ios
+* `firefox`
+* `chrome`
+* `iexplorer`
+* `linux`
+* `windows`
+* `mac_os`
+* `tizen`
+* `android`
+* `ios`
 
 
 ### constant_folding
@@ -214,9 +214,9 @@ Replaces Browser and HTML DOM objects by a member enumeration.
 ### mode
 Type: `String`
 
-`starter` - Standard protection and optimization behavior. Enough for most JavaScript applications
-`mobile` - Transformations are applied having into account the limitations and needs of mobile devices
-`html5` - Protects your HTML5 and Web Gaming applications by targeting the new HTML5 features
+* `starter` - Standard protection and optimization behavior. Enough for most * JavaScript applications
+* `mobile` - Transformations are applied having into account the limitations and needs of mobile devices
+* `html5` - Protects your HTML5 and Web Gaming applications by targeting the new HTML5 features
 `nodejs` - Protects your Node.js application
 
 ### name_prefix
