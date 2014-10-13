@@ -238,7 +238,14 @@ Type: `String`
 
 Renames local names only. The best way to replace names without worrying about name dependencies.
 
-### string_splitting:
+### self_defending:
+Type: `String`
+
+`%DEFAULT%` - enable self defending
+
+Obfuscates functions and objects concealing their logic and thwarting attempts of code tampering by using anti-tampering and anti-debugging techinques. Attempts to tamper the code will break its functionality and using JavaScript debuggers will trigger defenses to thwart analysis.
+
+### string_splitting
 Type: `String`
 
 `occurrences[;concatenation]`
