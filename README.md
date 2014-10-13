@@ -88,6 +88,24 @@ Type: `String`
 
 Remove function definitions and function calls with a given name.
 
+### browser_os_lock
+Type: `String`
+
+Locks a JavaScript application to run only on a specific Browser or Operating System.
+
+available values:
+
+* firefox
+* chrome
+* iexplorer
+* linux
+* windows
+* mac_os
+* tizen
+* android
+* ios
+
+
 ### constant_folding
 Type: `String`
 
