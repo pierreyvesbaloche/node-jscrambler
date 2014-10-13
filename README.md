@@ -219,7 +219,7 @@ Type: `String`
 
 Obfuscates functions and objects concealing their logic and thwarting attemps of code tampering by using anti-tampering and anti-debugging techinques. Attempts to tamper the code will break its functionality and using JavaScript debuggers will trigger defenses to thwart analysis.
 
-### string_splitting:
+### string_splitting
 Type: `String`
 
 `occurrences[;concatenation]`
