@@ -33,6 +33,13 @@ jscrambler input1.js input2.js -o dest/ -a XXXX -s XXXX
 jscrambler "lib/**/*.js" -o dest/ -a XXXX -s XXXX
 ```
 
+### Using configuration file
+```bash
+jscrambler input.js -s XXXX -a XXXX -c ./config.json > output.js
+```
+where `config.json` is an object optionally containing any of the JScrambler options listed below.
+ 
+
 ## API
 ```bash
 npm install jscrambler
