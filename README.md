@@ -1,7 +1,7 @@
 # JScrambler Client for Node.js
 
 ## CLI
-```shell
+```bash
 npm install -g jscrambler
 ```
     Usage: jscrambler [source files] [options]
@@ -19,22 +19,22 @@ npm install -g jscrambler
 When making API requests you must pass valid secret and access keys. These are each 40 characters long, alpha numeric strings, and uppercase. You can find them in your jscramber web dashboard under `My Account > Api access`. In the examples these are shortened to `XXXX` for the sake of readability.
 
 ### Output to a single file
-```shell
+```bash
 jscrambler input.js -a XXXX -s XXXX > output.js
 ```
 
 ### Output multiple files to a directory
-```shell
+```bash
 jscrambler input1.js input2.js -o dest/ -a XXXX -s XXXX
 ```
 
 ### Using minimatch
-```shell
+```bash
 jscrambler "lib/**/*.js" -o dest/ -a XXXX -s XXXX
 ```
 
 ## API
-```shell
+```bash
 npm install jscrambler
 ```
 ### Upload/download example
