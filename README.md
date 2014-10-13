@@ -15,18 +15,22 @@ npm install -g jscrambler
       -a, --access-key <accessKey>  Access key
       -s, --secret-key <secretKey>  Secret key
 
+### Required Fields
+When making API requests you must pass valid secret and access keys. These are each 40 characters long, alpha numeric strings, and uppercase. You can find them in your jscramber web dashboard under `My Account > Api access`. In the examples these are shortened to `XXXX` for the sake of readability.
+
 ### Output to a single file
 ```shell
-jscrambler input.js -a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -s XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX > output.js
+jscrambler input.js -a XXXX -s XXXX > output.js
 ```
 
 ### Output multiple files to a directory
 ```shell
-jscrambler input1.js input2.js -o dest/ -a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -s XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+jscrambler input1.js input2.js -o dest/ -a XXXX -s XXXX
 ```
+
 ### Using minimatch
 ```shell
-jscrambler "lib/**/*.js" -o dest/ -a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -s XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+jscrambler "lib/**/*.js" -o dest/ -a XXXX -s XXXX
 ```
 
 ## API
