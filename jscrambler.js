@@ -6,15 +6,17 @@
  */
 'use strict';
 
-var _ = require('lodash');
+var assign = require('lodash.assign');
 var fs = require('fs-extra');
 var glob = require('glob');
 var JScramblerClient = require('./jscrambler-client');
 var JSZip = require('jszip');
 var path = require('flavored-path');
 var Q = require('q');
+var size = require('lodash.size');
 var temp = require('temp').track();
 var util = require('util');
+
 
 var debug = !!process.env.DEBUG;
 
@@ -133,7 +135,7 @@ exports = module.exports =
   uploadCode: function (client, params) {
     var deferred = Q.defer();
 
-    params = _.extend({}, params);
+    params = assign({}, params);
     params.files = params.files.slice();
     this.zipProject(params.files, params.cwd);
     delete params.cwd;
@@ -330,7 +332,7 @@ exports = module.exports =
    */
   unzipProject: function (zipFile, dest) {
     var zip = new JSZip(zipFile);
-    var size = _.size(zip.files);
+    var size = size(zip.files);
     for (var file in zip.files) {
       if (!zip.files[file].options.dir) {
         var buffer = zip.file(file).asNodeBuffer();

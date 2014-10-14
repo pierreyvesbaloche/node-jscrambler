@@ -1,10 +1,15 @@
 'use strict';
-var _ = require('lodash');
+
+var clone = require('lodash.clone');
 var crypto = require('crypto');
+var defaults = require('lodash.defaults');
 var fs = require('fs');
+var keys = require('lodash.keys');
 var needle = require('needle');
 var querystring = require('querystring');
 var url = require('url');
+
+
 /**
  * @class JScramblerClient
  * @param {Object} options
@@ -20,7 +25,7 @@ function JScramblerClient (options) {
   /**
    * @member
    */
-  this.options = _.defaults(options || {}, {
+  this.options = defaults(options || {}, {
     accessKey: null,
     secretKey: null,
     host: 'api.jscrambler.com',
@@ -57,7 +62,7 @@ function buildPath (method, path, params) {
  */
 function buildSortedQuery (params) {
   // Sorted keys
-  var keys = _.keys(params).sort();
+  var keys = keys(params).sort();
   var query = '';
   for (var i = 0, l = keys.length; i < l; i++)
     query += encodeURIComponent(keys[i]) + '=' + encodeURIComponent(params[keys[i]]) + '&';
@@ -78,7 +83,7 @@ function buildSortedQuery (params) {
  * @returns {String} The digested signature.
  */
 function generateHmacSignature (method, path, params) {
-  var paramsCopy = _.clone(params);
+  var paramsCopy = clone(params);
   for (var key in params) {
     if (key.indexOf('file_') !== -1) {
       paramsCopy[key] = crypto.createHash('md5').update(
@@ -123,7 +128,7 @@ function handleFileParams (params) {
  properties.
  */
 function signedParams (method, path, params) {
-  _.defaults(params, {
+  defaults(params, {
     access_key: this.options.accessKey,
     timestamp: new Date().toISOString(),
     user_agent: 'Node'
