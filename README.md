@@ -162,7 +162,7 @@ Type: `String`
 
 There are some names that should never be replaced or reused to create new declarations e.g. document, toUpperCase. Public declarations existing in more than one source file should not be replaced if you submit only a part of the project where they appear. Therefore a list of irreplaceable names and the logic to make distinction between public and local names already exists on JScrambler to avoid touching those names. Use this parameter to add your own exceptions.
 
-### expiration_date:
+### expiration_date
 Type: `String`
 
 `date` - date format YYYY/MM/DD
@@ -238,12 +238,14 @@ Type: `String`
 
 Renames local names only. The best way to replace names without worrying about name dependencies.
 
-### self_defending:
+
+### self_defending
 Type: `String`
 
 `%DEFAULT%` - enable self defending
 
-Obfuscates functions and objects concealing their logic and thwarting attempts of code tampering by using anti-tampering and anti-debugging techinques. Attempts to tamper the code will break its functionality and using JavaScript debuggers will trigger defenses to thwart analysis.
+Obfuscates functions and objects concealing their logic and thwarting code tampering attempts by using anti-tampering and anti-debugging techniques. Attempts to tamper the code will break its functionality and using JavaScript debuggers will trigger defenses to thwart analysis.
+
 
 ### string_splitting
 Type: `String`
