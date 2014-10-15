@@ -1,9 +1,9 @@
 /* global describe, beforeEach, it, expect, spyOn, Buffer, jasmine, console */
 
-var _ = require('lodash');
 var fs = require('fs');
 var jScrambler = require('../../jscrambler');
 var jScramblerKeys = require('../../jscrambler_keys');
+var pluck = require('lodash.pluck');
 var util = require('util');
 
 describe('JScrambler Client', function () {
@@ -46,7 +46,7 @@ describe('JScrambler Client', function () {
 
           expect(res.sources.length).toEqual(files.length);
           for (var i = 0, l = files.length; i < l; ++i) {
-            expect(_.pluck(res.sources, 'filename').indexOf(files[i]) !== -1).toBeTruthy();
+            expect(pluck(res.sources, 'filename').indexOf(files[i]) !== -1).toBeTruthy();
           }
 
           projectId = res.id;
@@ -68,7 +68,7 @@ describe('JScrambler Client', function () {
 
           expect(res.sources.length).toEqual(files.length);
           for (var i = 0, l = files.length; i < l; ++i) {
-            expect(_.pluck(res.sources, 'filename').indexOf(files[i]) !== -1).toBeTruthy();
+            expect(pluck(res.sources, 'filename').indexOf(files[i]) !== -1).toBeTruthy();
             expect(res.sources[i].error_id).toEqual(null);
           }
         })
@@ -89,7 +89,7 @@ describe('JScrambler Client', function () {
 
           expect(res.sources.length).toEqual(files.length);
           for (var i = 0, l = files.length; i < l; ++i) {
-            expect(_.pluck(res.sources, 'filename').indexOf(files[i]) !== -1).toBeTruthy();
+            expect(pluck(res.sources, 'filename').indexOf(files[i]) !== -1).toBeTruthy();
           }
 
           var finishedAt = new Date(res.finished_at);
