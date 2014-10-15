@@ -17,5 +17,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-jasmine-node');
 
+  grunt.registerTask('default', ['test']);
   grunt.registerTask('test', ['clean', 'jasmine_node', 'clean']);
 };
