@@ -1,6 +1,6 @@
 jscrambler_keys.json
 node_modules
 npm-debug.log
-reports/
+results/
 tmp
 .*
