@@ -332,7 +332,7 @@ exports = module.exports =
    */
   unzipProject: function (zipFile, dest) {
     var zip = new JSZip(zipFile);
-    var size = size(zip.files);
+    var _size = size(zip.files);
     for (var file in zip.files) {
       if (!zip.files[file].options.dir) {
         var buffer = zip.file(file).asNodeBuffer();
@@ -341,7 +341,7 @@ exports = module.exports =
         } else if (dest) {
           var lastDestChar = dest[dest.length - 1];
           var destPath;
-          if (size === 1 && lastDestChar !== '/' && lastDestChar !== '\\') {
+          if (_size === 1 && lastDestChar !== '/' && lastDestChar !== '\\') {
             destPath = dest;
           } else {
             destPath = path.join(dest, file);

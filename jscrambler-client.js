@@ -62,10 +62,10 @@ function buildPath (method, path, params) {
  */
 function buildSortedQuery (params) {
   // Sorted keys
-  var keys = keys(params).sort();
+  var _keys = keys(params).sort();
   var query = '';
-  for (var i = 0, l = keys.length; i < l; i++)
-    query += encodeURIComponent(keys[i]) + '=' + encodeURIComponent(params[keys[i]]) + '&';
+  for (var i = 0, l = _keys.length; i < l; i++)
+    query += encodeURIComponent(_keys[i]) + '=' + encodeURIComponent(params[_keys[i]]) + '&';
   query = query
             .replace(/\*/g, '%2A')
             .replace(/[!'()]/g, escape)
