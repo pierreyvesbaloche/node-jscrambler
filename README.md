@@ -197,10 +197,10 @@ Type: `String`
 
 Replaces literals by a randomly sized chain of ternary operators. You may configure the minimum and maximum number of predicates per literal, as the occurrence probability of the transformation. This allows you to control how big the obfuscated JavaScript grows and the potency of the transformation.
 
-### literal_duplicates
+### duplicate_literals
 Type: `String`
 
-`%DEFAULT%` - enable literal duplicates
+`%DEFAULT%` - enable duplicate literals
 
 Replaces literal duplicates by a symbol.
 
