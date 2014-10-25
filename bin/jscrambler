@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 
-console.log ('argv', process.argv);
-
 var commander = require('commander');
 var glob = require('glob');
 var jScrambler = require('../jscrambler');
