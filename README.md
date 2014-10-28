@@ -8,7 +8,7 @@ npm install -g jscrambler
 
     Options:
 
-      ---help                                                 output usage information
+      --help                                                  output usage information
       -V, --version                                           output the version number
       -c, --config [config]                                   JScrambler configuration options
       -o, --output [output]                                   Output directory. If not specified the output is printed.
