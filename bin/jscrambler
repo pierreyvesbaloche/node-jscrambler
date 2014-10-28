@@ -4,7 +4,7 @@
 var commander = require('commander');
 var glob = require('glob');
 var jScrambler = require('../jscrambler');
-var parseConfigOptions = require('./parse-cli-config');
+var cli = require('../lib/cli');
 var path = require('path');
 
 commander
@@ -88,8 +88,8 @@ if (commander.config) {
   config = {};
 }
 
-// command line options override config file options
-parseConfigOptions(commander, config);
+// Parse configuration (normalize JScrambler parameters)
+config = cli.parseConfig(commander, config);
 
 config.files = filesSrc;
 
@@ -110,7 +110,7 @@ jScrambler
     if (filesSrc.length === 1 && !dest) {
       dest = function (buffer, file) {
         console.log(buffer.toString());
-      }
+      };
     }
     return jScrambler.unzipProject(res, dest);
   })
