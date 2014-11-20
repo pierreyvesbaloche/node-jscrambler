@@ -43,6 +43,20 @@ npm install -g jscrambler
       --whitespace                                            enable whitespace
 
 
+### Authentication Config
+You may optionally put your access and secret keys into a config file which will be read from the user's home directory when invoking jscrambler from the command line. Besides simplifying the command entry, this has the added benefit of not logging your jscrambler credentials.
+
+here's an example of what your `~/.jscramblerrc` file should look like:
+
+```javascript
+{
+  "secret_key": "XXXXXXXX",
+  "access_key": "XXXXXXXX"
+}
+``` 
+Replace the `XXXXXX` fields with your values of course. :)
+
+
 ### Required Fields
 When making API requests you must pass valid secret and access keys. These are each 40 characters long, alpha numeric strings, and uppercase. You can find them in your jscramber web dashboard under `My Account > Api access`. In the examples these are shortened to `XXXX` for the sake of readability.
 
