@@ -63,10 +63,10 @@ if (commander.args.length === 1 && /^.*\.json$/.test(commander.args[0])) {
 
 // load accesskey and secretkey from config file in ~/.jscramblerrc if present
 var cfg = rc('jscramblerrc');
-if (cfg.secret_key) {
+if (cfg.secret_key && !commander.secretKey) {
   commander.secretKey = cfg.secret_key;
 }
-if (cfg.access_key) {
+if (cfg.access_key && !commander.accessKey) {
   commander.accessKey = cfg.access_key;
 }
 
