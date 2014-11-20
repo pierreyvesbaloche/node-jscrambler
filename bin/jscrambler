@@ -6,6 +6,8 @@ var glob = require('glob');
 var jScrambler = require('../jscrambler');
 var cli = require('../lib/cli');
 var path = require('path');
+var rc = require('../lib/rc-load');
+
 
 commander
   .version(require('../package.json').version)
@@ -57,6 +59,15 @@ if (commander.args.length === 1 && /^.*\.json$/.test(commander.args[0])) {
   params = configFile.params;
 } else {
   globSrc = commander.args;
+}
+
+// load accesskey and secretkey from config file in ~/.jscramblerrc if present
+var cfg = rc('jscramblerrc');
+if (cfg.secret_key) {
+  commander.secretKey = cfg.secret_key;
+}
+if (cfg.access_key) {
+  commander.accessKey = cfg.access_key;
 }
 
 if (!commander.accessKey || !commander.secretKey) {
