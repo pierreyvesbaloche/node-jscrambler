@@ -50,10 +50,12 @@ here's an example of what your `~/.jscramblerrc` file should look like:
 
 ```javascript
 {
-  "secret_key": "XXXXXXXX",
-  "access_key": "XXXXXXXX"
+  "keys": {
+    "accessKey": "XXXXXX",
+    "secretKey": "XXXXXX"
+  }
 }
-``` 
+```
 Replace the `XXXXXX` fields with your values of course. :)
 
 
