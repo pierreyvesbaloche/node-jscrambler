@@ -205,9 +205,7 @@ exports = module.exports =
   process: function (configPathOrObject, destCallback) {
     var config = typeof configPathOrObject === 'string' ?
           require(configPathOrObject) : configPathOrObject;
-    if (!config.keys || !config.keys.accessKey || !config.keys.secretKey) {
-      throw new Error('Access key and secret key must be provided in the configuration file.');
-    }
+
     var accessKey = config.keys.accessKey;
     var secretKey = config.keys.secretKey;
     var host = config.host;
