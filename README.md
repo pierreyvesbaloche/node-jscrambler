@@ -1,5 +1,55 @@
 # JScrambler Client for Node.js
 
+- [RC config](#rc-config)
+- [CLI](#cli)
+  - [Required Fields](#required-fields)
+  - [Output to a single file](#output-to-a-single-file)
+  - [Output multiple files to a directory](#output-multiple-files-to-a-directory)
+  - [Using minimatch](#using-minimatch)
+  - [Using configuration file](#using-configuration-file)
+- [API](#api)
+  - [Upload/download example](#uploaddownload-example)
+- [JScrambler Options](#jscrambler-options)
+  - [asserts_elimination](#asserts_elimination)
+  - [browser_os_lock](#browser_os_lock)
+  - [constant_folding](#constant_folding)
+  - [dead_code](#dead_code)
+  - [dead_code_elimination](#dead_code_elimination)
+  - [debugging_code_elimination](#debugging_code_elimination)
+  - [dictionary_compression](#dictionary_compression)
+  - [domain_lock](#domain_lock)
+  - [dot_notation_elimination](#dot_notation_elimination)
+  - [exceptions_list](#exceptions_list)
+  - [expiration_date](#expiration_date)
+  - [function_outlining](#function_outlining)
+  - [function_reorder](#function_reorder)
+  - [ignore_files](#ignore_files)
+  - [literal_hooking](#literal_hooking)
+  - [duplicate_literals](#duplicate_literals)
+  - [member_enumeration](#member_enumeration)
+  - [mode](#mode)
+  - [name_prefix](#name_prefix)
+  - [rename_all](#rename_all)
+  - [rename_local](#rename_local)
+  - [self_defending](#self_defending)
+  - [string_splitting](#string_splitting)
+  - [whitespace](#whitespace)
+
+## RC configuration
+You may put your access and secret keys into a config file if found in [these directories](https://github.com/dominictarr/rc#standards). Besides simplifying the command entry, this has the added benefit of not logging your JScrambler credentials.
+
+Here's an example of what your `.jscramblerrc` file should look like:
+
+```javascript
+{
+  "keys": {
+    "accessKey": "XXXXXX",
+    "secretKey": "XXXXXX"
+  }
+}
+```
+Replace the `XXXXXX` fields with your values of course. :)
+
 ## CLI
 ```bash
 npm install -g jscrambler
@@ -43,24 +93,8 @@ npm install -g jscrambler
       --whitespace                                            enable whitespace
 
 
-### Authentication Config
-You may optionally put your access and secret keys into a config file which will be read from the user's home directory when invoking jscrambler from the command line. Besides simplifying the command entry, this has the added benefit of not logging your jscrambler credentials.
-
-here's an example of what your `~/.jscramblerrc` file should look like:
-
-```javascript
-{
-  "keys": {
-    "accessKey": "XXXXXX",
-    "secretKey": "XXXXXX"
-  }
-}
-```
-Replace the `XXXXXX` fields with your values of course. :)
-
-
 ### Required Fields
-When making API requests you must pass valid secret and access keys. These are each 40 characters long, alpha numeric strings, and uppercase. You can find them in your jscramber web dashboard under `My Account > Api access`. In the examples these are shortened to `XXXX` for the sake of readability.
+When making API requests you must pass valid secret and access keys, through the command line or by having a `.jscramblerrc` file. These keys are each 40 characters long, alpha numeric strings, and uppercase. You can find them in your jscramber web dashboard under `My Account > Api access`. In the examples these are shortened to `XXXX` for the sake of readability.
 
 ### Output to a single file
 ```bash
@@ -81,7 +115,7 @@ jscrambler "lib/**/*.js" -o dest/ -a XXXX -s XXXX
 ```bash
 jscrambler input.js -s XXXX -a XXXX -c ./config.json > output.js
 ```
-where `config.json` is an object optionally containing any of the JScrambler options listed below.
+where `config.json` is an object optionally containing any of the JScrambler options listed [here](#jscrambler-options).
 
 
 ## API
@@ -94,8 +128,10 @@ var fs = require('fs-extra');
 var jScrambler = require('jscrambler');
 
 var client = new jScrambler.Client({
-  accessKey: '',
-  secretKey: ''
+  keys: {
+    accessKey: '', // not needed if you have it on your `.jscramblerrc`
+    secretKey: '' // not needed if you have it on your `.jscramblerrc`
+  }
 });
 
 jScrambler
