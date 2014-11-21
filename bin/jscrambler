@@ -6,7 +6,6 @@ var glob = require('glob');
 var jScrambler = require('../jscrambler');
 var cli = require('../lib/cli');
 var path = require('path');
-var rc = require('rc');
 
 
 commander
@@ -61,24 +60,6 @@ if (commander.args.length === 1 && /^.*\.json$/.test(commander.args[0])) {
   globSrc = commander.args;
 }
 
-// Load RC configuration if present
-var cfg = rc('jscrambler', {
-  keys: {}
-});
-// Apply secret key if available and not overriden
-if (cfg.keys.secretKey && !commander.secretKey) {
-  commander.secretKey = cfg.keys.secretKey;
-}
-// Apply access key if available and not overriden
-if (cfg.keys.accessKey && !commander.accessKey) {
-  commander.accessKey = cfg.keys.accessKey;
-}
-
-if (!commander.accessKey || !commander.secretKey) {
-  console.error('Access and secret keys must be provided to engage with the services.');
-  process.exit(1);
-}
-
 if (!commander.output && filesSrc.length > 1) {
   console.error('Destination must be specified unless only one file is used as input.');
   process.exit(1);
@@ -108,28 +89,33 @@ config = cli.parseConfig(commander, config);
 
 config.files = filesSrc;
 
-var client = new jScrambler.Client({
-  accessKey: accessKey,
-  secretKey: secretKey,
-  host: host,
-  port: port,
-  apiVersion: apiVersion
-});
-
-jScrambler
-  .uploadCode(client, config)
-  .then(function (res) {
-    return jScrambler.downloadCode(client, res.id);
-  })
-  .then(function (res) {
-    if (filesSrc.length === 1 && !dest) {
-      dest = function (buffer, file) {
-        console.log(buffer.toString());
-      };
-    }
-    return jScrambler.unzipProject(res, dest);
-  })
-  .fail(function (err) {
-    console.error(err);
-    process.exit(1);
+try {
+  var client = new jScrambler.Client({
+    accessKey: accessKey,
+    secretKey: secretKey,
+    host: host,
+    port: port,
+    apiVersion: apiVersion
   });
+
+  jScrambler
+    .uploadCode(client, config)
+    .then(function (res) {
+      return jScrambler.downloadCode(client, res.id);
+    })
+    .then(function (res) {
+      if (filesSrc.length === 1 && !dest) {
+        dest = function (buffer, file) {
+          console.log(buffer.toString());
+        };
+      }
+      return jScrambler.unzipProject(res, dest);
+    })
+    .fail(function (err) {
+      console.error(err);
+      process.exit(1);
+    });
+} catch (ex) {
+  console.error(ex.toString());
+  process.exit(1);
+}

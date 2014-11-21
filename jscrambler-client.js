@@ -7,8 +7,16 @@ var fs = require('fs');
 var keys = require('lodash.keys');
 var needle = require('needle');
 var querystring = require('querystring');
+var rc = require('rc');
 var url = require('url');
 
+// Load RC configuration if present
+var cfg = rc('jscrambler', {
+  keys: {},
+  host: 'api.jscrambler.com',
+  port: 443,
+  apiVersion: 3
+});
 
 /**
  * @class JScramblerClient
@@ -22,17 +30,18 @@ var url = require('url');
  * @license MIT <http://opensource.org/licenses/MIT>
  */
 function JScramblerClient (options) {
+  // Sluggish hack for backwards compatibility
+  if (options && !options.keys && (options.accessKey || options.secretKey)) {
+    options.keys = {};
+    options.keys.accessKey = options.accessKey;
+    options.keys.secretKey = options.secretKey;
+  }
+
   /**
    * @member
    */
-  this.options = defaults(options || {}, {
-    accessKey: null,
-    secretKey: null,
-    host: 'api.jscrambler.com',
-    port: 443,
-    apiVersion: 3
-  });
-  if (!this.options.accessKey || !this.options.secretKey)
+  this.options = defaults(options || {}, cfg);
+  if (!this.options.keys.accessKey || !this.options.keys.secretKey)
     throw new Error('Missing access or secret keys');
 }
 /**
@@ -92,7 +101,7 @@ function generateHmacSignature (method, path, params) {
   }
   var signatureData = method.toUpperCase() + ';' + this.options.host.toLowerCase() +
     ';' + path + ';' + buildSortedQuery(paramsCopy);
-  var hmac = crypto.createHmac('sha256', this.options.secretKey.toUpperCase());
+  var hmac = crypto.createHmac('sha256', this.options.keys.secretKey.toUpperCase());
   hmac.update(signatureData);
   return hmac.digest('base64');
 }
@@ -129,7 +138,7 @@ function handleFileParams (params) {
  */
 function signedParams (method, path, params) {
   defaults(params, {
-    access_key: this.options.accessKey,
+    access_key: this.options.keys.accessKey,
     timestamp: new Date().toISOString(),
     user_agent: 'Node'
   });
