@@ -7,6 +7,7 @@
 'use strict';
 
 var assign = require('lodash.assign');
+var cfg = require('./lib/config');
 var fs = require('fs-extra');
 var glob = require('glob');
 var JScramblerClient = require('./jscrambler-client');
@@ -24,6 +25,7 @@ exports = module.exports =
 /** @lends jScramblerFacade */
 {
   Client: JScramblerClient,
+  config: cfg,
   /**
    * Downloads code through the API.
    * @param {JScramblerClient} client

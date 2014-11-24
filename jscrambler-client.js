@@ -1,5 +1,6 @@
 'use strict';
 
+var cfg = require('./lib/config');
 var clone = require('lodash.clone');
 var crypto = require('crypto');
 var defaults = require('lodash.defaults');
@@ -7,16 +8,7 @@ var fs = require('fs');
 var keys = require('lodash.keys');
 var needle = require('needle');
 var querystring = require('querystring');
-var rc = require('rc');
 var url = require('url');
-
-// Load RC configuration if present
-var cfg = rc('jscrambler', {
-  keys: {},
-  host: 'api.jscrambler.com',
-  port: 443,
-  apiVersion: 3
-});
 
 /**
  * @class JScramblerClient
