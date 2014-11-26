@@ -2,22 +2,22 @@
   "name": "jscrambler",
   "description": "JScrambler API client.",
   "version": "0.5.11",
-  "homepage": "https://github.com/auditmark/node-jscrambler",
+  "homepage": "https://github.com/jscrambler/node-jscrambler",
   "author": {
     "name": "magalhas",
     "email": "magalhas@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com:auditmark/node-jscrambler.git"
+    "url": "git://github.com:jscrambler/node-jscrambler.git"
   },
   "bugs": {
-    "url": "https://github.com/auditmark/node-jscrambler/issues"
+    "url": "https://github.com/jscrambler/node-jscrambler/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/auditmark/node-jscrambler/blob/master/LICENSE-MIT"
+      "url": "https://github.com/jscrambler/node-jscrambler/blob/master/LICENSE-MIT"
     }
   ],
   "scripts": {
