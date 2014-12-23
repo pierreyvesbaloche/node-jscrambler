@@ -27,10 +27,10 @@
     "node": ">= 0.8.0"
   },
   "dependencies": {
-    "commander": "^2.5.0",
+    "commander": "^2.5.1",
     "flavored-path": "0.0.8",
     "fs-extra": "^0.12.0",
-    "glob": "^4.2.1",
+    "glob": "^4.3.2",
     "jszip": "^2.4.0",
     "lodash.assign": "^2.4.1",
     "lodash.clone": "^2.4.1",
