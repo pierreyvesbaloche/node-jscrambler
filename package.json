@@ -36,6 +36,7 @@
     "lodash.clone": "^2.4.1",
     "lodash.defaults": "^2.4.1",
     "lodash.keys": "^2.4.1",
+    "lodash.omit": "^2.4.1",
     "lodash.pluck": "^2.4.1",
     "lodash.size": "^2.4.1",
     "needle": "^0.7.10",
