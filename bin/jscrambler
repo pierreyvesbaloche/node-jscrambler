@@ -26,9 +26,11 @@ commander
   .option('--debugging-code-elimination [debuggingCodeElimination', 'Removes statements and public variable declarations used to control the output of debugging messages that help you debug your code.')
   .option('--dictionary-compression', 'further shrink your source code')
   .option('--domain-lock [domainLock]', 'Locks your project to a list of domains you specify.')
+  .option('--domain-lock-warning-function [domainLockWarningFunction]', 'Domain lock warning function.')
   .option('--dot-notation-elimination', 'Transforms dot notation to subscript notation.')
   .option('--exceptions-list [exceptionsList]', 'list of exceptions that will never be replaced or used to create new declarations')
   .option('--expiration-date [expirationDate]', 'Sets your JavaScript to expire after a date (YYYY/MM/DD) of your choosing.')
+  .option('--expiration-date-warning-function [expirationDateWarningFunction]', 'Expiration date warning function.')
   .option('--function-outlining', 'Turns statements into new function declarations.')
   .option('--function-reorder', 'Randomly reorders your source code\'s function declarations.')
   .option('--ignore-files [ignoreFiles]', 'Define a list of files (relative paths) that JScrambler must ignore.')
@@ -86,7 +88,6 @@ if (commander.config) {
 
 // Parse configuration (normalize JScrambler parameters)
 config = cli.parseConfig(commander, config);
-
 config.files = filesSrc;
 
 try {
