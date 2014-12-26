@@ -7,11 +7,13 @@
 'use strict';
 
 var assign = require('lodash.assign');
-var cfg = require('./lib/config');
+var config = require('./lib/config');
+var defaults = require('lodash.defaults');
 var fs = require('fs-extra');
 var glob = require('glob');
 var JScramblerClient = require('./jscrambler-client');
 var JSZip = require('jszip');
+var omit = require('lodash.omit');
 var path = require('flavored-path');
 var Q = require('q');
 var size = require('lodash.size');
@@ -25,7 +27,7 @@ exports = module.exports =
 /** @lends jScramblerFacade */
 {
   Client: JScramblerClient,
-  config: cfg,
+  config: config,
   /**
    * Downloads code through the API.
    * @param {JScramblerClient} client
@@ -138,6 +140,12 @@ exports = module.exports =
     var deferred = Q.defer();
 
     params = assign({}, params);
+    // If there are no params fallback to `cfg`
+    var rawParams = omit(params, 'files', 'cwd');
+    if (Object.keys(rawParams).length === 0) {
+      params = defaults(params, this.config.params);
+    }
+
     params.files = params.files.slice();
     this.zipProject(params.files, params.cwd);
     delete params.cwd;
