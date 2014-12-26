@@ -45,6 +45,9 @@ Here's an example of what your `.jscramblerrc` file should look like:
   "keys": {
     "accessKey": "XXXXXX",
     "secretKey": "XXXXXX"
+  },
+  "params": {
+    "self_defending": "%DEFAULT%"
   }
 }
 ```
