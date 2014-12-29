@@ -1,7 +1,7 @@
 {
   "name": "jscrambler",
   "description": "JScrambler API client.",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "homepage": "https://github.com/jscrambler/node-jscrambler",
   "author": {
     "name": "magalhas",
