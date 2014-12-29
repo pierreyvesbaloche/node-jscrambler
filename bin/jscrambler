@@ -7,7 +7,6 @@ var jScrambler = require('../jscrambler');
 var cli = require('../lib/cli');
 var path = require('path');
 
-
 commander
   .version(require('../package.json').version)
   .usage('[source files] [options]')
@@ -47,18 +46,23 @@ commander
   .parse(process.argv);
 
 var filesSrc = [];
-var globSrc, params;
-if (commander.args.length === 1 && /^.*\.json$/.test(commander.args[0])) {
-  var configFile = require(path.resolve(commander.args[0], '.'));
-  globSrc = configFile.filesSrc;
-  commander.output = configFile.filesDest;
-  commander.accessKey = configFile.keys.accessKey;
-  commander.secretKey = configFile.keys.secretKey;
-  commander.host = configFile.host;
-  commander.port = configFile.port;
-  commander.apiVersion = configFile.apiVersion;
-  params = configFile.params;
+var globSrc, params, config;
+
+if (commander.config) {
+  config = require(path.resolve(commander.config, '.'));
+  commander.output = commander.output || config.filesDest;
+  commander.accessKey = commander.accessKey || config.keys.accessKey;
+  commander.secretKey = commander.secretKey || config.keys.secretKey;
+  commander.host = commander.host || config.host;
+  commander.port = commander.port || config.port;
+  commander.apiVersion = commander.apiVersion || config.apiVersion;
+  globSrc = config.filesSrc;
+  params = config = config.params;
 } else {
+  params = config = {};
+}
+
+if (commander.args.length > 0) {
   globSrc = commander.args;
 }
 
@@ -78,22 +82,16 @@ var host = commander.host;
 var port = commander.port && parseInt(commander.port);
 var apiVersion = commander.apiVersion;
 
-var config;
-if (commander.config) {
-  config = require(path.resolve(commander.config, '.'));
-  config = config.params || config || params || {};
-} else {
-  config = {};
-}
-
 // Parse configuration (normalize JScrambler parameters)
 config = cli.parseConfig(commander, config);
 config.files = filesSrc;
 
 try {
   var client = new jScrambler.Client({
-    accessKey: accessKey,
-    secretKey: secretKey,
+    keys: {
+      accessKey: accessKey,
+      secretKey: secretKey
+    },
     host: host,
     port: port,
     apiVersion: apiVersion
