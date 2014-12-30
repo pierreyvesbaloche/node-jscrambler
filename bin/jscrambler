@@ -51,8 +51,8 @@ var globSrc, params, config;
 if (commander.config) {
   config = require(path.resolve(commander.config, '.'));
   commander.output = commander.output || config.filesDest;
-  commander.accessKey = commander.accessKey || config.keys.accessKey;
-  commander.secretKey = commander.secretKey || config.keys.secretKey;
+  commander.accessKey = commander.accessKey || config.keys && config.keys.accessKey;
+  commander.secretKey = commander.secretKey || config.keys && config.keys.secretKey;
   commander.host = commander.host || config.host;
   commander.port = commander.port || config.port;
   commander.apiVersion = commander.apiVersion || config.apiVersion;
