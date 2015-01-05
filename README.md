@@ -1,6 +1,6 @@
 # JScrambler Client for Node.js
 
-- [RC config](#rc-config)
+- [RC configuration](#rc-configuration)
 - [CLI](#cli)
   - [Required Fields](#required-fields)
   - [Output to a single file](#output-to-a-single-file)
@@ -118,7 +118,7 @@ jscrambler "lib/**/*.js" -o dest/ -a XXXX -s XXXX
 ```bash
 jscrambler input.js -s XXXX -a XXXX -c ./config.json > output.js
 ```
-where `config.json` is an object optionally containing any of the JScrambler options listed [here](#jscrambler-options).
+where `config.json` is an object optionally containing any of the JScrambler options listed [here](#jscrambler-options), using the structure described [in the RC configuration](#rc-config).
 
 
 ## API
