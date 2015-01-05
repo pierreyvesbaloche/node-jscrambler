@@ -29,7 +29,7 @@ function JScramblerClient (options) {
     options.keys.secretKey = options.secretKey;
   }
 
-  options.keys = defaults(options || {}, cfg.keys);
+  options.keys = defaults(options.keys || {}, cfg.keys);
   /**
    * @member
    */
