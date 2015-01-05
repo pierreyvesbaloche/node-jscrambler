@@ -71,6 +71,11 @@ if (commander.args.length > 0) {
   globSrc = commander.args;
 }
 
+if (!globSrc) {
+  commander.outputHelp();
+  process.exit(1);
+}
+
 var filesSrc = [];
 // Iterate `globSrc` to build a list of source files into `filesSrc`
 for (var i = 0, l = globSrc.length; i < l; ++i) {
