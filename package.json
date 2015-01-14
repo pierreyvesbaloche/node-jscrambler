@@ -30,7 +30,7 @@
     "commander": "^2.5.1",
     "flavored-path": "0.0.8",
     "fs-extra": "^0.12.0",
-    "glob": "^4.3.2",
+    "glob": "^4.3.4",
     "jszip": "^2.4.0",
     "lodash.assign": "^2.4.1",
     "lodash.clone": "^2.4.1",
@@ -42,7 +42,7 @@
     "needle": "^0.7.10",
     "q": "^1.1.2",
     "rc": "^0.5.4",
-    "snake-case": "^1.0.1",
+    "snake-case": "^1.1.0",
     "temp": "^0.8.1"
   },
   "devDependencies": {
