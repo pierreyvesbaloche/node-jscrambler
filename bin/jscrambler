@@ -119,7 +119,7 @@ try {
     .then(function (res) {
       if (filesSrc.length === 1 && !dest) {
         dest = function (buffer, file) {
-          console.log(buffer.toString());
+          process.stdout.write(buffer.toString());
         };
       }
       return jScrambler.unzipProject(res, dest);
