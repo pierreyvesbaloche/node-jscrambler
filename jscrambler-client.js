@@ -168,6 +168,14 @@ JScramblerClient.prototype.request = function (method, path, params, callback) {
   var signedData;
   var options = {timeout: 0};
   if (!params) params = {};
+  else {
+    var _keys = keys(params);
+    for (var i = 0, l = _keys.length; i < l; i++) {
+      if(params[_keys[i]] instanceof Array && _keys[i] !== 'files') {
+        params[_keys[i]] = params[_keys[i]].join(',');
+      }
+    }
+  }
   // If post sign data and set the request as multipart
   if (method === 'POST') {
     signedData = signedParams.apply(this, arguments);
