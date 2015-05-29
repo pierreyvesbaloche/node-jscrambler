@@ -160,7 +160,10 @@ jScrambler
     return jScrambler.downloadCode(client, res.id);
   })
   .then(function (res) {
-    fs.outputFileSync('dist.zip', res);
+    return fs.writeFileSync('dist.zip', res);
+  })
+  .catch(function (error) {
+    console.log(error);
   });
 ```
 
