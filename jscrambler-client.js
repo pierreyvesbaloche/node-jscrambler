@@ -10,6 +10,8 @@ var needle = require('needle');
 var querystring = require('querystring');
 var url = require('url');
 
+var debug = !!process.env.DEBUG;
+
 /**
  * @class JScramblerClient
  * @param {Object} options
@@ -94,6 +96,7 @@ function generateHmacSignature (method, path, params) {
   }
   var signatureData = method.toUpperCase() + ';' + this.options.host.toLowerCase() +
     ';' + path + ';' + buildSortedQuery(paramsCopy);
+  debug && console.log('Signature data: ' + signatureData);
   var hmac = crypto.createHmac('sha256', this.options.keys.secretKey.toUpperCase());
   hmac.update(signatureData);
   return hmac.digest('base64');
@@ -166,7 +169,10 @@ JScramblerClient.prototype.get = function (path, params, callback) {
  */
 JScramblerClient.prototype.request = function (method, path, params, callback) {
   var signedData;
-  var options = {timeout: 0};
+  var options = {
+    open_timeout: 0,
+    read_timeout: 0
+  };
   if (!params) params = {};
   else {
     var _keys = keys(params);
