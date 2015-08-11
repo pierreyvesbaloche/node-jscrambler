@@ -141,7 +141,7 @@ exports = module.exports =
 
     params = assign({}, params);
     // If there are no params fallback to `cfg`
-    var rawParams = omit(params, 'files', 'cwd');
+    var rawParams = omit(params, ['files', 'cwd', 'apiVersion', 'port', 'deleteProject']);
     if (Object.keys(rawParams).length === 0) {
       params = defaults(params, this.config.params);
     }
