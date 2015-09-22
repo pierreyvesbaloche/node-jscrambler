@@ -203,6 +203,11 @@ Type: `String`
 
 Simplifies constant expressions at compile-time to make your code faster at run-time.
 
+### cwd
+Type: `String`
+
+Sets the current working directory of JScrambler. Use this to compile a project which is located under another folder.
+
 ### dead_code
 Type: `String`
 
