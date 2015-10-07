@@ -1,9 +1,7 @@
 #!/usr/bin/env node
-'use strict';
-
 var commander = require('commander');
 var glob = require('glob');
-var jScrambler = require('../jscrambler');
+var jScrambler = require('../lib/jscrambler');
 var cli = require('../lib/cli');
 var path = require('path');
 

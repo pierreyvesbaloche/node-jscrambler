@@ -21,7 +21,9 @@
     }
   ],
   "scripts": {
-    "test": "grunt test 2> /dev/null"
+    "build": "grunt build",
+    "test": "grunt test 2> /dev/null",
+    "watch": "grunt watch"
   },
   "engines": {
     "node": ">= 0.8.0"
@@ -39,17 +41,20 @@
     "lodash.omit": "^3.1.0",
     "lodash.pluck": "^3.1.2",
     "lodash.size": "^3.0.2",
-    "needle": "^0.10.0",
     "q": "^1.4.1",
     "rc": "^1.1.0",
     "snake-case": "^1.1.1",
+    "superagent": "^1.4.0",
     "temp": "^0.8.3"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-babel": "^5.0.3",
     "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.8.1",
+    "grunt-contrib-watch": "^0.6.1",
     "grunt-jasmine-node": "^0.3.1"
   },
-  "main": "jscrambler",
+  "main": "lib/jscrambler",
   "bin": "bin/jscrambler"
 }

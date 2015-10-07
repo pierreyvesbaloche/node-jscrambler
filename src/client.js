@@ -1,16 +1,13 @@
-'use strict';
+import clone from 'lodash.clone';
+import crypto from 'crypto';
+import defaults from 'lodash.defaults';
+import fs from 'fs';
+import keys from 'lodash.keys';
+import request from 'superagent';
+import url from 'url';
+import cfg from './config';
 
-var cfg = require('./lib/config');
-var clone = require('lodash.clone');
-var crypto = require('crypto');
-var defaults = require('lodash.defaults');
-var fs = require('fs');
-var keys = require('lodash.keys');
-var needle = require('needle');
-var querystring = require('querystring');
-var url = require('url');
-
-var debug = !!process.env.DEBUG;
+const debug = !!process.env.DEBUG;
 
 /**
  * @class JScramblerClient
@@ -38,23 +35,6 @@ function JScramblerClient (options) {
   this.options = defaults(options || {}, cfg);
   if (!this.options.keys.accessKey || !this.options.keys.secretKey)
     throw new Error('Missing access or secret keys');
-}
-/**
- * Builds the request URL. In case of being a POST it doesn't append data to
- the query string.
- * @private
- * @memberof JScramblerClient
- * @param {String} method
- * @param {String} path
- * @param {Object} params
- * @returns {String} The request path.
- */
-function buildPath (method, path, params) {
-  var query = '';
-  if (method !== 'POST') {
-    query = '?' + querystring.stringify(signedParams.apply(this, arguments));
-  }
-  return '/v' + this.options.apiVersion + path + query;
 }
 /**
  * It builds a query string sorted by key.
@@ -133,13 +113,13 @@ function handleFileParams (params) {
  properties.
  */
 function signedParams (method, path, params) {
-  defaults(params, {
+  params = defaults(clone(params), {
     access_key: this.options.keys.accessKey,
     timestamp: new Date().toISOString(),
     user_agent: 'Node'
   });
   if (method === 'POST' && params.files) handleFileParams(params);
-  params.signature = generateHmacSignature.apply(this, arguments);
+  params.signature = generateHmacSignature.call(this, method, path, params);
   return params;
 }
 /**
@@ -167,34 +147,37 @@ JScramblerClient.prototype.get = function (path, params, callback) {
  * @param {Object} params
  * @param {Callback} callback
  */
-JScramblerClient.prototype.request = function (method, path, params, callback) {
+JScramblerClient.prototype.request = function (method, path, params = {}, callback = null) {
   var signedData;
-  var options = {
-    open_timeout: 0,
-    read_timeout: 0
-  };
-  if (!params) params = {};
-  else {
-    var _keys = keys(params);
-    for (var i = 0, l = _keys.length; i < l; i++) {
-      if(params[_keys[i]] instanceof Array && _keys[i] !== 'files') {
-        params[_keys[i]] = params[_keys[i]].join(',');
-      }
+
+  var _keys = keys(params);
+  for (var i = 0, l = _keys.length; i < l; i++) {
+    if(params[_keys[i]] instanceof Array && _keys[i] !== 'files') {
+      params[_keys[i]] = params[_keys[i]].join(',');
     }
   }
+
   // If post sign data and set the request as multipart
-  if (method === 'POST') {
-    signedData = signedParams.apply(this, arguments);
-    options.multipart = true;
-  }
+  signedData = signedParams.apply(this, arguments);
+
   // Format URL
   var protocol = this.options.port === 443 ? 'https' : 'http';
+
   var formatedUrl = url.format({
     hostname: this.options.host,
     port: this.options.port,
     protocol: protocol
-  }) + buildPath.call(this, method, path, params);
-  needle.request(method, formatedUrl, signedData || params, options, callback);
+  }) + path;
+
+  const req = request[method.toLowerCase()](formatedUrl).type('json');
+
+  if (method === 'POST' || method === 'PUT') {
+    req.send(signedData);
+  } else {
+    req.query(signedData);
+  }
+
+  req.end(callback);
 };
 /**
  * Post request.
