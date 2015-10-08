@@ -1,11 +1,9 @@
 import Q from 'q';
-import temp from 'temp';
 import JScramblerClient from './client';
 import config from './config';
 import {createApplication} from './mutations';
 import {getApplication} from './queries';
 
-temp.track();
 const debug = !!process.env.DEBUG;
 
 export default
