@@ -7,6 +7,8 @@ export function getApplication (applicationId) {
           name,
           createdAt,
           sources {
+            _id,
+            filename,
             extension
           }
         }
