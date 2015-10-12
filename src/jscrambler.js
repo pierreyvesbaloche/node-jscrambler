@@ -11,15 +11,15 @@ export default
 {
   Client: JScramblerClient,
   config: config,
-  createApplication (client, data) {
+  createApplication (client, data, fragments) {
     const deferred = Q.defer();
-    client.post('/', createApplication(data), responseHandler(deferred));
+    client.post('/', createApplication(data, fragments), responseHandler(deferred));
     return deferred.promise;
   },
-  getApplication (client, applicationId) {
+  getApplication (client, applicationId, fragments) {
     const deferred = Q.defer();
     debug && console.log('Getting info', applicationId);
-    client.get('/', getApplication(applicationId), responseHandler(deferred));
+    client.get('/', getApplication(applicationId, fragments), responseHandler(deferred));
     return deferred.promise;
   }
 };
