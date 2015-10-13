@@ -23,3 +23,24 @@ export function getApplication (applicationId, fragments = getApplicationDefault
     })
   };
 }
+
+const getApplicationSourceDefaultFragments = `
+  _id,
+  filename,
+  extension
+`;
+
+export function getApplicationSource (sourceId, fragments = getApplicationSourceDefaultFragments) {
+  return {
+    query: `
+      query getApplicationSource ($sourceId: String!) {
+        applicationSource(_id: $sourceId) {
+          ${fragments}
+        }
+      }
+    `,
+    params: JSON.stringify({
+      sourceId
+    })
+  };
+}

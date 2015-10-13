@@ -2,7 +2,11 @@ import Q from 'q';
 import JScramblerClient from './client';
 import config from './config';
 import {createApplication} from './mutations';
-import {getApplication} from './queries';
+
+import {
+  getApplication,
+  getApplicationSource
+} from './queries';
 
 const debug = !!process.env.DEBUG;
 
@@ -20,6 +24,12 @@ export default
     const deferred = Q.defer();
     debug && console.log('Getting info', applicationId);
     client.get('/', getApplication(applicationId, fragments), responseHandler(deferred));
+    return deferred.promise;
+  },
+  getApplicationSource (client, sourceId, fragments) {
+    const deferred = Q.defer();
+    debug && console.log('Getting info', sourceId);
+    client.get('/', getApplicationSource(sourceId, fragments), responseHandler(deferred));
     return deferred.promise;
   }
 };
