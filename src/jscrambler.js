@@ -4,7 +4,8 @@ import config from './config';
 
 import {
   createApplication,
-  updateApplicationSource
+  updateApplicationSource,
+  removeSourceFromApplication
 } from './mutations';
 
 import {
@@ -41,9 +42,10 @@ export default
     client.post('/', updateApplicationSource(applicationSource, fragments), responseHandler(deferred));
     return deferred.promise;
   },
-  query (client, queryAndVariables) {
+  removeSourceFromApplication (client, sourceId, applicationId, fragments) {
     const deferred = Q.defer();
-    client.post('/', queryAndVariables, responseHandler(deferred));
+    debug && console.log('Getting info', sourceId);
+    client.post('/', removeSourceFromApplication(sourceId, applicationId, fragments), responseHandler(deferred));
     return deferred.promise;
   }
 };

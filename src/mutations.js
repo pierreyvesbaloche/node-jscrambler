@@ -40,3 +40,22 @@ export function updateApplicationSource (applicationSource, fragments = updateAp
     }
   };
 }
+
+const removeSourceFromApplicationDefaultFragments = `
+`;
+
+export function removeSourceFromApplication (sourceId, applicationId, fragments = removeSourceFromApplicationDefaultFragments) {
+  return {
+    query: `
+      mutation removeSource ($_id: String!, $applicationId: String!) {
+        removeSource (_id: $_id, applicationId: $applicationId) {
+          ${fragments}
+        }
+      }
+    `,
+    params: {
+      _id: sourceId,
+      applicationId
+    }
+  };
+}
