@@ -1,7 +1,11 @@
 import Q from 'q';
 import JScramblerClient from './client';
 import config from './config';
-import {createApplication} from './mutations';
+
+import {
+  createApplication,
+  updateApplicationSource
+} from './mutations';
 
 import {
   getApplication,
@@ -30,6 +34,16 @@ export default
     const deferred = Q.defer();
     debug && console.log('Getting info', sourceId);
     client.get('/', getApplicationSource(sourceId, fragments), responseHandler(deferred));
+    return deferred.promise;
+  },
+  updateApplicationSource (client, applicationSource, fragments) {
+    const deferred = Q.defer();
+    client.post('/', updateApplicationSource(applicationSource, fragments), responseHandler(deferred));
+    return deferred.promise;
+  },
+  query (client, queryAndVariables) {
+    const deferred = Q.defer();
+    client.post('/', queryAndVariables, responseHandler(deferred));
     return deferred.promise;
   }
 };
