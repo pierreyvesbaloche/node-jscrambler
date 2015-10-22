@@ -24,35 +24,35 @@ export default
   createApplication (client, data, fragments) {
     const deferred = Q.defer();
     client.post('/', createApplication(data, fragments), responseHandler(deferred));
-    return deferred.promise;
+    return deferred.promise.then(errorHandler);
   },
   updateApplication (client, application, fragments) {
     const deferred = Q.defer();
     client.post('/', updateApplication(application, fragments), responseHandler(deferred));
-    return deferred.promise;
+    return deferred.promise.then(errorHandler);
   },
   getApplication (client, applicationId, fragments) {
     const deferred = Q.defer();
     debug && console.log('Getting info', applicationId);
     client.get('/', getApplication(applicationId, fragments), responseHandler(deferred));
-    return deferred.promise;
+    return deferred.promise.then(errorHandler);
   },
   getApplicationSource (client, sourceId, fragments) {
     const deferred = Q.defer();
     debug && console.log('Getting info', sourceId);
     client.get('/', getApplicationSource(sourceId, fragments), responseHandler(deferred));
-    return deferred.promise;
+    return deferred.promise.then(errorHandler);
   },
   updateApplicationSource (client, applicationSource, fragments) {
     const deferred = Q.defer();
     client.post('/', updateApplicationSource(applicationSource, fragments), responseHandler(deferred));
-    return deferred.promise;
+    return deferred.promise.then(errorHandler);
   },
   removeSourceFromApplication (client, sourceId, applicationId, fragments) {
     const deferred = Q.defer();
     debug && console.log('Getting info', sourceId);
     client.post('/', removeSourceFromApplication(sourceId, applicationId, fragments), responseHandler(deferred));
-    return deferred.promise;
+    return deferred.promise.then(errorHandler);
   }
 };
 
@@ -78,4 +78,14 @@ function responseHandler (deferred) {
       deferred.reject(body);
     }
   };
+}
+
+function errorHandler (res) {
+  if (res.errors && res.errors.length) {
+    res.errors.forEach(function (error) {
+      console.error(error.message);
+    });
+  }
+
+  return res;
 }
