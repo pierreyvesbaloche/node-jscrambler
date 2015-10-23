@@ -20,6 +20,9 @@ var debug = !!process.env.DEBUG;
  * @param {String} [options.host=api.jscrambler.com]
  * @param {String} [options.port=443]
  * @param {String} [options.apiVersion=3]
+ * @param {String} [options.proxyUrl]
+ * @param {String} [options.proxyUsername]
+ * @param {String} [options.proxyPassword]
  * @author José Magalhães (magalhas@gmail.com)
  * @license MIT <http://opensource.org/licenses/MIT>
  */
@@ -32,6 +35,16 @@ function JScramblerClient (options) {
   }
 
   options.keys = defaults(options.keys || {}, cfg.keys);
+
+  // Sluggish hack for backwards compatibility for proxy informations
+  if (options && !options.proxyInfos && (options.proxyUrl || options.proxyUsername || options.proxyPassword)) {
+    options.proxyInfos = {};
+    options.proxyInfos.proxyUrl = options.proxyUrl;
+    options.proxyInfos.proxyUsername = options.proxyUsername;
+    options.proxyInfos.proxyPassword = options.proxyPassword;
+  }
+
+  options.proxyInfos = defaults(options.proxyInfos || {}, cfg.proxyInfos);
   /**
    * @member
    */
@@ -169,7 +182,7 @@ JScramblerClient.prototype.get = function (path, params, callback) {
  */
 JScramblerClient.prototype.request = function (method, path, params, callback) {
   var signedData;
-  var options = {
+  var optionsNeedle = {
     open_timeout: 0,
     read_timeout: 0
   };
@@ -181,11 +194,23 @@ JScramblerClient.prototype.request = function (method, path, params, callback) {
         params[_keys[i]] = params[_keys[i]].join(',');
       }
     }
+
+  // Managing Proxy parameters for Needle 
+  if (this.options.proxyInfos.proxyUrl) {
+	optionsNeedle.proxy = this.options.proxyInfos.proxyUrl;
   }
+  if (this.options.proxyUsername) {
+	optionsNeedle.username = this.options.proxyInfos.proxyUsername;
+  }
+  if (this.options.proxyPassword) {
+	optionsNeedle.password = this.options.proxyInfos.proxyPassword;
+  }
+  
+  if (!params) params = {};
   // If post sign data and set the request as multipart
   if (method === 'POST') {
     signedData = signedParams.apply(this, arguments);
-    options.multipart = true;
+    optionsNeedle.multipart = true;
   }
   // Format URL
   var protocol = this.options.port === 443 ? 'https' : 'http';
@@ -194,7 +219,7 @@ JScramblerClient.prototype.request = function (method, path, params, callback) {
     port: this.options.port,
     protocol: protocol
   }) + buildPath.call(this, method, path, params);
-  needle.request(method, formatedUrl, signedData || params, options, callback);
+  needle.request(method, formatedUrl, signedData || params, optionsNeedle, callback);
 };
 /**
  * Post request.

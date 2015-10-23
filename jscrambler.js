@@ -221,13 +221,21 @@ exports = module.exports =
     var host = config.host;
     var port = config.port;
     var apiVersion = config.apiVersion;
+
+    var proxyUrl = config.proxyInfos.proxyUrl;
+	var proxyUsername = config.proxyInfos.proxyUsername;
+	var proxyPassword = config.proxyInfos.proxyPassword;
+	
     // Instance a JScrambler client
     var client = new this.Client({
       accessKey: accessKey,
       secretKey: secretKey,
       host: host,
       port: port,
-      apiVersion: apiVersion
+      apiVersion: apiVersion,
+	  proxyUrl: proxyUrl,
+	  proxyUsername: proxyUsername,
+	  proxyPassword: proxyPassword
     });
     // Check for source files and add them to the parameters
     if (!config.filesSrc) {
